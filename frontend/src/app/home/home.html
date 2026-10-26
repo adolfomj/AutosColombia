@@ -1,14 +1,15 @@
-<section class="welcome" aria-labelledby="welcome-title">
-  <div class="welcome-copy">
-    <span class="eyebrow">ORDEN EN CADA MOVIMIENTO</span>
-    <h1 id="welcome-title">Autos Colombia</h1>
-    <p class="description">Control de entradas y salidas de vehículos</p>
-    <p class="supporting-copy">
-      Un espacio para organizar el movimiento de vehículos y mantener la información a mano.
-    </p>
-    <div class="welcome-note">
-      <span class="note-line" aria-hidden="true"></span>
-      <span>Bienvenido a tu espacio de gestión.</span>
+<div class="home-page">
+  <header class="home-header">
+    <div>
+      <span class="eyebrow">TU CENTRO DE OPERACIONES</span>
+      <div class="title-row">
+        <h1 id="welcome-title">Autos Colombia</h1>
+        <span class="title-sep" aria-hidden="true">·</span>
+        <span class="title-sub">Bienvenido a tu espacio de gestión</span>
+      </div>
+      <p class="supporting-header">
+        Todo lo necesario para administrar tu parqueadero desde el primer día.
+      </p>
     </div>
     <p
       class="connection-status"
@@ -21,67 +22,231 @@
       <span class="status-dot" aria-hidden="true"></span>
       {{ connectionMessage() }}
     </p>
-  </div>
+  </header>
 
-  <div class="illustration" aria-hidden="true">
-    <div class="illustration-grid"></div>
-    <span class="parking-label">AUTOS COLOMBIA</span>
-    <svg viewBox="0 0 400 250" fill="none">
-      <path d="M40 205H360" stroke="currentColor" stroke-opacity=".15" stroke-width="2" />
-      <path
-        d="M87 154L110 103C114 94 122 89 133 89H259C270 89 278 94 282 103L305 154"
-        fill="#d8e5e2"
-        stroke="#214c43"
-        stroke-width="4"
-      />
-      <path d="M127 104H265L282 144H110L127 104Z" fill="#214c43" />
-      <path d="M197 105V143" stroke="#d8e5e2" stroke-width="4" />
-      <rect
-        x="78"
-        y="145"
-        width="236"
-        height="53"
-        rx="16"
-        fill="#f9fbfa"
-        stroke="#214c43"
-        stroke-width="4"
-      />
-      <rect x="96" y="193" width="31" height="17" rx="6" fill="#214c43" />
-      <rect x="265" y="193" width="31" height="17" rx="6" fill="#214c43" />
-      <rect x="95" y="159" width="37" height="12" rx="4" fill="#e9b85c" />
-      <rect x="260" y="159" width="37" height="12" rx="4" fill="#e9b85c" />
-      <rect x="171" y="174" width="50" height="12" rx="3" fill="#d8e5e2" />
-      <path
-        d="M49 87V58H78M322 58H351V87"
-        stroke="#77968e"
-        stroke-width="3"
-        stroke-linecap="round"
-      />
-    </svg>
-    <span class="illustration-caption">Cada entrada. Cada salida.</span>
-  </div>
-</section>
+  <section class="hero-banner" aria-labelledby="welcome-title">
+    <div class="hero-copy">
+      <span class="hero-badge">ORDEN EN CADA MOVIMIENTO</span>
+      <p class="description">Control de entradas y salidas de vehículos</p>
+      <p class="supporting-copy">
+        Un espacio para organizar el movimiento de vehículos, asignar celdas y mantener la
+        información siempre a mano.
+      </p>
+      <div class="hero-actions">
+        <a class="btn-amber" href="/control-acceso">Registrar movimiento →</a>
+        <a class="btn-ghost" href="/gestion/vehiculos">Ver vehículos</a>
+      </div>
+    </div>
 
-<section class="overview" aria-labelledby="overview-title">
-  <div class="section-heading">
-    <h2 id="overview-title">Una gestión más organizada</h2>
-    <p>Lo esencial, en un solo lugar.</p>
-  </div>
-  <div class="feature-grid">
-    <article class="feature">
-      <span class="feature-number" aria-hidden="true">01</span>
-      <h3>Entradas</h3>
-      <p>El punto de partida para el control de cada vehículo.</p>
+    <div class="illustration" aria-hidden="true">
+      <div class="illustration-top">
+        <span class="parking-label">AUTOS COLOMBIA</span>
+        <span class="p-badge">P</span>
+      </div>
+      <svg viewBox="0 0 380 175" fill="none">
+        <rect
+          x="22"
+          y="20"
+          width="78"
+          height="128"
+          rx="10"
+          stroke="#4f8c78"
+          stroke-width="1.5"
+          stroke-dasharray="5 5"
+        />
+        <text x="61" y="88" fill="#5e9b86" font-size="11" font-weight="700" text-anchor="middle">
+          A-01
+        </text>
+
+        <rect
+          x="114"
+          y="20"
+          width="94"
+          height="128"
+          rx="10"
+          fill="#246350"
+          stroke="#7bc4a9"
+          stroke-width="1.5"
+        />
+        <rect x="132" y="34" width="58" height="100" rx="16" fill="#f4f8f5" />
+        <rect x="139" y="50" width="44" height="24" rx="6" fill="#17493a" />
+        <rect x="139" y="82" width="44" height="32" rx="6" fill="#215948" />
+        <rect x="136" y="32" width="13" height="5" rx="2.5" fill="#eab354" />
+        <rect x="173" y="32" width="13" height="5" rx="2.5" fill="#eab354" />
+        <rect x="147" y="122" width="28" height="6" rx="3" fill="#c5dad1" />
+
+        <rect
+          x="222"
+          y="20"
+          width="78"
+          height="128"
+          rx="10"
+          stroke="#4f8c78"
+          stroke-width="1.5"
+          stroke-dasharray="5 5"
+        />
+        <text x="261" y="88" fill="#5e9b86" font-size="11" font-weight="700" text-anchor="middle">
+          A-03
+        </text>
+
+        <circle cx="338" cy="84" r="19" fill="#eab354" />
+        <path
+          d="M331 84H345M340 78L346 84L340 90"
+          stroke="#133d31"
+          stroke-width="2.2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+      <div class="illustration-bottom">
+        <span class="illustration-caption">Cada entrada · Cada salida</span>
+        <span class="mobility-pill">MOVILIDAD EN ORDEN</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="summary-cards" aria-label="Resumen de catálogos">
+    <article class="summary-card">
+      <div class="summary-top">
+        <span class="summary-icon icon-green" aria-hidden="true">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="9" cy="7" r="4" />
+            <path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2" />
+          </svg>
+        </span>
+        <span class="summary-tag">Catálogo base</span>
+      </div>
+      <h3>Operadores</h3>
+      <p>Personas autorizadas para registrar movimientos de entrada y salida.</p>
+      <a class="summary-link" href="/gestion/operadores">Gestionar operadores <span>→</span></a>
     </article>
-    <article class="feature">
-      <span class="feature-number" aria-hidden="true">02</span>
-      <h3>Salidas</h3>
-      <p>El cierre de cada recorrido, con orden y claridad.</p>
+
+    <article class="summary-card">
+      <div class="summary-top">
+        <span class="summary-icon icon-amber" aria-hidden="true">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <rect x="3" y="3" width="7" height="7" rx="1" />
+            <rect x="14" y="3" width="7" height="7" rx="1" />
+            <rect x="14" y="14" width="7" height="7" rx="1" />
+            <rect x="3" y="14" width="7" height="7" rx="1" />
+          </svg>
+        </span>
+        <span class="summary-tag">Espacios físicos</span>
+      </div>
+      <h3>Celdas</h3>
+      <p>Espacios físicos numerados y clasificados por categoría libre.</p>
+      <a class="summary-link" href="/gestion/celdas">Gestionar celdas <span>→</span></a>
     </article>
-    <article class="feature">
-      <span class="feature-number" aria-hidden="true">03</span>
-      <h3>Información</h3>
-      <p>Una visión clara para acompañar la operación diaria.</p>
+
+    <article class="summary-card">
+      <div class="summary-top">
+        <span class="summary-icon icon-mint" aria-hidden="true">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M5 17h14v-5l-2-5H7l-2 5v5z" />
+            <circle cx="7.5" cy="17.5" r="1.5" />
+            <circle cx="16.5" cy="17.5" r="1.5" />
+          </svg>
+        </span>
+        <span class="summary-tag">Parque automotor</span>
+      </div>
+      <h3>Vehículos</h3>
+      <p>Catálogo de placas normalizadas, marcas, modelos, colores y tipos.</p>
+      <a class="summary-link" href="/gestion/vehiculos">Gestionar vehículos <span>→</span></a>
     </article>
-  </div>
-</section>
+  </section>
+
+  <section class="overview" aria-labelledby="overview-title">
+    <div class="prepare-card">
+      <div class="prepare-header">
+        <div>
+          <span class="eyebrow">PRIMEROS PASOS</span>
+          <h2 id="overview-title">Prepara tu operación</h2>
+          <p>Sigue estos pasos para dejar listo tu parqueadero.</p>
+        </div>
+        <span class="step-pill">Guía rápida</span>
+      </div>
+
+      <div class="step-list">
+        <div class="step-item">
+          <span class="step-num">01</span>
+          <div class="step-body">
+            <h3>Crea tus primeros operadores</h3>
+            <p>
+              Necesitas al menos un operador para registrar quién recibe o entrega cada vehículo en
+              portería.
+            </p>
+          </div>
+          <a class="step-btn" href="/gestion/operadores">+ Crear operador</a>
+        </div>
+
+        <div class="step-item">
+          <span class="step-num">02</span>
+          <div class="step-body">
+            <h3>Registra las celdas del parqueadero</h3>
+            <p>
+              Define los espacios disponibles con un código (ej. A-01) y un tipo libre (Carro, Moto,
+              Visitante…).
+            </p>
+          </div>
+          <a class="step-btn" href="/gestion/celdas">+ Crear celda</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="how-card">
+      <span class="eyebrow">CÓMO FUNCIONA</span>
+      <h2>De entrada a salida</h2>
+      <p class="how-sub">Lo esencial, en un solo lugar.</p>
+
+      <div class="feature-grid">
+        <article class="feature">
+          <span class="feature-number" aria-hidden="true">1</span>
+          <div>
+            <h3>Entradas</h3>
+            <p>El punto de partida: placa, celda asignada y operador responsable.</p>
+          </div>
+        </article>
+        <article class="feature">
+          <span class="feature-number" aria-hidden="true">2</span>
+          <div>
+            <h3>Salidas</h3>
+            <p>El cierre de cada recorrido, liberando la celda con orden y claridad.</p>
+          </div>
+        </article>
+        <article class="feature">
+          <span class="feature-number" aria-hidden="true">3</span>
+          <div>
+            <h3>Información</h3>
+            <p>Una visión clara para acompañar la operación diaria en tiempo real.</p>
+          </div>
+        </article>
+      </div>
+
+      <p class="how-footnote">
+        Las celdas listadas en catálogos no indican disponibilidad en tiempo real; la ocupación se
+        valida al registrar cada entrada.
+      </p>
+    </div>
+  </section>
+</div>

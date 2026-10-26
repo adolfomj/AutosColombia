@@ -1,156 +1,234 @@
 <section class="management" aria-labelledby="access-title">
   <header class="heading">
     <div>
-      <span class="eyebrow">AUTOS COLOMBIA</span>
+      <span class="eyebrow">OPERACIÓN EN VIVO</span>
       <h1 id="access-title">Control de acceso</h1>
-      <p>Registra entradas, consulta vehículos y confirma salidas.</p>
+      <p>
+        Registra entradas, consulta vehículos dentro o fuera del parqueadero y confirma salidas.
+      </p>
     </div>
-  </header>
-  <section class="panel" aria-label="Catálogos">
-    <button type="button" (click)="cargarCatalogos()" [disabled]="catalogLoading() || saving()">
-      Actualizar catálogos
+    <button
+      type="button"
+      class="btn-refresh"
+      (click)="cargarCatalogos()"
+      [disabled]="catalogLoading() || saving()"
+    >
+      ↻ Actualizar catálogos
     </button>
-    @if (catalogLoading()) {
-      <p role="status">Cargando todas las páginas de celdas y operadores…</p>
-    }
-    @if (catalogError()) {
-      <p role="alert" class="notice error">{{ catalogError() }}</p>
-    }
-    @if (!catalogLoading() && !catalogError()) {
-      <p>{{ celdas().length }} celdas · {{ operadores().length }} operadores.</p>
-      @if (!celdas().length || !operadores().length) {
+  </header>
+
+  @if (catalogLoading()) {
+    <p class="notice" role="status">Cargando todas las páginas de celdas y operadores…</p>
+  }
+  @if (catalogError()) {
+    <p role="alert" class="notice error">{{ catalogError() }}</p>
+  }
+  @if (!catalogLoading() && !catalogError() && (!celdas().length || !operadores().length)) {
+    <div class="catalog-warning">
+      <div class="warning-copy">
+        <strong>Faltan catálogos para operar</strong>
         <p>Registra celdas y operadores desde su gestión para poder seleccionarlos.</p>
-      }
-    }
-    <p class="hint">
-      Las celdas listadas no indican disponibilidad. La ocupación se validará al registrar la
-      entrada.
-    </p>
-  </section>
-  <section class="panel" aria-labelledby="entry-title">
-    <h2 id="entry-title">Registrar entrada</h2>
-    <form [formGroup]="entrada" (ngSubmit)="registrarEntrada()">
-      <fieldset [disabled]="busy() || catalogLoading() || !!catalogError()">
-        <legend class="sr-only">Datos de entrada</legend>
-        <div class="form-grid">
+      </div>
+      <div class="warning-actions">
+        <a class="warning-btn" href="/gestion/operadores">+ Crear operador</a>
+        <a class="warning-btn" href="/gestion/celdas">+ Crear celda</a>
+      </div>
+    </div>
+  }
+
+  <div class="access-grid">
+    <section class="panel card-panel" aria-labelledby="entry-title">
+      <div class="card-header">
+        <div class="card-title-group">
+          <span class="card-icon icon-entry" aria-hidden="true">↘</span>
+          <div>
+            <h2 id="entry-title">Registrar entrada</h2>
+            <p class="card-sub">Asigna una celda disponible y el operador que recibe.</p>
+          </div>
+        </div>
+        <span class="step-tag">PASO 1</span>
+      </div>
+
+      <form [formGroup]="entrada" (ngSubmit)="registrarEntrada()">
+        <fieldset [disabled]="busy() || catalogLoading() || !!catalogError()">
+          <legend class="sr-only">Datos de entrada</legend>
           <div class="field">
-            <label for="entry-plate">Placa de entrada</label
-            ><input
+            <label for="entry-plate">Placa de entrada <span class="req">*</span></label>
+            <input
               id="entry-plate"
               formControlName="placa"
               type="text"
+              placeholder="EJ. ABC123"
               aria-describedby="entry-plate-error"
             />
+            <span class="field-hint"
+              >Se convierte automáticamente a mayúsculas y sin espacios.</span
+            >
             <span id="entry-plate-error" class="field-error">
               @if (entrada.controls.placa.touched && entrada.controls.placa.invalid) {
                 La placa es obligatoria y no puede estar vacía.
               }
             </span>
           </div>
-          <div class="field">
-            <label for="entry-cell">Celda</label
-            ><select id="entry-cell" formControlName="celda_id">
-              <option [ngValue]="null">Selecciona una celda</option>
-              @for (c of celdas(); track c.id) {
-                <option [ngValue]="c.id">{{ c.codigo }} · {{ c.tipo }}</option>
-              }
-            </select>
-            <span class="field-error">
-              @if (entrada.controls.celda_id.touched && entrada.controls.celda_id.invalid) {
-                Selecciona una celda.
-              }
-            </span>
+
+          <div class="form-grid">
+            <div class="field">
+              <label for="entry-cell">Celda <span class="req">*</span></label>
+              <select id="entry-cell" formControlName="celda_id">
+                <option [ngValue]="null">Selecciona una celda</option>
+                @for (c of celdas(); track c.id) {
+                  <option [ngValue]="c.id">{{ c.codigo }} · {{ c.tipo }}</option>
+                }
+              </select>
+              <span class="field-error">
+                @if (entrada.controls.celda_id.touched && entrada.controls.celda_id.invalid) {
+                  Selecciona una celda.
+                }
+              </span>
+            </div>
+
+            <div class="field">
+              <label for="entry-operator">Operador de entrada <span class="req">*</span></label>
+              <select id="entry-operator" formControlName="operador_id">
+                <option [ngValue]="null">Selecciona un operador</option>
+                @for (o of operadores(); track o.id) {
+                  <option [ngValue]="o.id">{{ o.nombre }} · #{{ o.id }}</option>
+                }
+              </select>
+              <span class="field-error">
+                @if (entrada.controls.operador_id.touched && entrada.controls.operador_id.invalid) {
+                  Selecciona un operador.
+                }
+              </span>
+            </div>
           </div>
-          <div class="field">
-            <label for="entry-operator">Operador de entrada</label
-            ><select id="entry-operator" formControlName="operador_id">
-              <option [ngValue]="null">Selecciona un operador</option>
-              @for (o of operadores(); track o.id) {
-                <option [ngValue]="o.id">{{ o.nombre }} · #{{ o.id }}</option>
-              }
-            </select>
-            <span class="field-error">
-              @if (entrada.controls.operador_id.touched && entrada.controls.operador_id.invalid) {
-                Selecciona un operador.
-              }
-            </span>
+
+          <p class="info-callout">
+            Las celdas listadas no indican disponibilidad. La ocupación se validará al registrar la
+            entrada.
+          </p>
+
+          <button class="primary full-btn" type="submit">↘ Registrar entrada</button>
+        </fieldset>
+      </form>
+
+      @if (errorEntrada()) {
+        <p class="notice error" role="alert">{{ errorEntrada() }}</p>
+      }
+      @if (exitoEntrada()) {
+        <p class="notice success" role="status">{{ exitoEntrada() }}</p>
+      }
+    </section>
+
+    <section class="panel card-panel" aria-labelledby="query-title">
+      <div class="card-header">
+        <div class="card-title-group">
+          <span class="card-icon icon-exit" aria-hidden="true">↗</span>
+          <div>
+            <h2 id="query-title">Consultar vehículo y registrar salida</h2>
+            <p class="card-sub">Verifica si un vehículo está dentro y confirma su salida.</p>
           </div>
         </div>
-        <button class="primary" type="submit">Registrar entrada</button>
-      </fieldset>
-    </form>
-    @if (errorEntrada()) {
-      <p class="notice error" role="alert">{{ errorEntrada() }}</p>
-    }
-    @if (exitoEntrada()) {
-      <p class="notice success" role="status">{{ exitoEntrada() }}</p>
-    }
-  </section>
-  <section class="panel" aria-labelledby="query-title">
-    <h2 id="query-title">Consultar vehículo y registrar salida</h2>
-    <form [formGroup]="consulta" (ngSubmit)="buscar()">
-      <fieldset [disabled]="saving()">
-        <legend class="sr-only">Consulta y salida</legend>
-        <div class="form-grid">
+        <span class="step-tag">PASO 2</span>
+      </div>
+
+      <form [formGroup]="consulta" (ngSubmit)="buscar()">
+        <fieldset [disabled]="saving()">
+          <legend class="sr-only">Consulta y salida</legend>
           <div class="field">
-            <label for="query-plate">Placa a consultar</label
-            ><input id="query-plate" type="text" formControlName="placa" />
+            <label for="query-plate">Placa a consultar <span class="req">*</span></label>
+            <input
+              id="query-plate"
+              type="text"
+              formControlName="placa"
+              placeholder="EJ. ABC123"
+            />
             <span class="field-error">
               @if (consulta.controls.placa.touched && consulta.controls.placa.invalid) {
                 La placa es obligatoria y no puede estar vacía.
               }
             </span>
           </div>
+
           <div class="field">
-            <label for="exit-operator">Operador de salida</label
-            ><select id="exit-operator" formControlName="operador_id">
+            <label for="exit-operator">Operador de salida</label>
+            <select id="exit-operator" formControlName="operador_id">
               <option [ngValue]="null">Selecciona un operador</option>
               @for (o of operadores(); track o.id) {
                 <option [ngValue]="o.id">{{ o.nombre }} · #{{ o.id }}</option>
               }
             </select>
+            <span class="field-hint">Requerido únicamente al momento de confirmar la salida.</span>
             <span class="field-error">
               @if (consulta.controls.operador_id.touched && consulta.controls.operador_id.invalid) {
                 Selecciona un operador para confirmar la salida.
               }
             </span>
           </div>
-        </div>
-        <button type="submit" [disabled]="busy()">Consultar vehículo</button>
-      </fieldset>
-    </form>
-    @if (querying()) {
-      <p role="status">Consultando vehículo…</p>
-    }
-    @if (saving()) {
-      <p role="status">Registrando operación…</p>
-    }
-    @if (estado(); as state) {
-      <div class="notice" role="status">
-        <strong>{{ state.vehiculo.placa }} · {{ state.esta_dentro ? 'Dentro' : 'Fuera' }}</strong>
-        <p>{{ state.vehiculo.marca }} · {{ state.vehiculo.color }}</p>
-        @if (state.estancia; as stay) {
-          <p>Celda {{ stay.celda.codigo }} · Entrada {{ fecha(stay.entrada) }}</p>
-          <p>Confirma la salida de este vehículo con el operador seleccionado.</p>
-          <button
-            type="button"
-            class="primary"
-            (click)="registrarSalida()"
-            [disabled]="busy() || catalogLoading() || !!catalogError()"
-          >
-            Confirmar salida
+
+          <button class="secondary full-btn" type="submit" [disabled]="busy()">
+            ⌕ Consultar vehículo
           </button>
-        } @else {
-          <p>Vehículo registrado sin estancia abierta.</p>
-        }
-      </div>
+        </fieldset>
+      </form>
+
+      @if (querying()) {
+        <p class="notice" role="status">Consultando vehículo…</p>
+      }
+      @if (saving()) {
+        <p class="notice" role="status">Registrando operación…</p>
+      }
+      @if (estado(); as state) {
+        <div class="notice state-card" role="status">
+          <div class="state-header">
+            <strong>{{ state.vehiculo.placa }} · {{ state.esta_dentro ? 'Dentro' : 'Fuera' }}</strong>
+            <span class="state-pill" [class.inside]="state.esta_dentro">
+              {{ state.esta_dentro ? 'Estancia activa' : 'Sin estancia' }}
+            </span>
+          </div>
+          <p>{{ state.vehiculo.marca }} · {{ state.vehiculo.color }}</p>
+          @if (state.estancia; as stay) {
+            <p>Celda {{ stay.celda.codigo }} · Entrada {{ fecha(stay.entrada) }}</p>
+            <p class="state-confirm-hint">
+              Confirma la salida de este vehículo con el operador seleccionado.
+            </p>
+            <button
+              type="button"
+              class="primary full-btn"
+              (click)="registrarSalida()"
+              [disabled]="busy() || catalogLoading() || !!catalogError()"
+            >
+              Confirmar salida
+            </button>
+          } @else {
+            <p>Vehículo registrado sin estancia abierta.</p>
+          }
+        </div>
+      } @else if (!querying() && !errorConsulta() && !exitoSalida()) {
+        <div class="empty-query" aria-hidden="true">
+          <span class="empty-query-icon">⌕</span>
+          <strong>Sin consulta activa</strong>
+          <p>
+            Busca una placa para ver su estado (Dentro o Fuera), la celda asignada y la hora de
+            entrada.
+          </p>
+        </div>
+      }
+      @if (errorConsulta()) {
+        <p role="alert" class="notice error">{{ errorConsulta() }}</p>
+      }
+      @if (exitoSalida()) {
+        <p role="status" class="notice success">{{ exitoSalida() }}</p>
+      }
+    </section>
+  </div>
+
+  <section class="panel catalog-bar" aria-label="Catálogos">
+    <p class="hint">
+      Fechas mostradas en America/Bogota. La fecha y hora las asigna el servidor.
+    </p>
+    @if (!catalogLoading() && !catalogError()) {
+      <p class="catalog-pill">{{ celdas().length }} celdas · {{ operadores().length }} operadores.</p>
     }
-    @if (errorConsulta()) {
-      <p role="alert" class="notice error">{{ errorConsulta() }}</p>
-    }
-    @if (exitoSalida()) {
-      <p role="status" class="notice success">{{ exitoSalida() }}</p>
-    }
-    <p class="hint">Fechas mostradas en America/Bogota. La fecha y hora las asigna el servidor.</p>
   </section>
 </section>

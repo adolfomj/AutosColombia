@@ -1,30 +1,100 @@
-<div class="page-shell">
-  <header class="site-header">
-    <a class="brand" routerLink="/" aria-label="Autos Colombia, inicio">
-      <span class="brand-mark" aria-hidden="true">AC</span><span>Autos Colombia</span>
-    </a>
-    <nav aria-label="Navegación principal">
-      <a routerLink="/control-acceso" routerLinkActive="active" ariaCurrentWhenActive="page"
-        >Control de acceso</a
-      >
-      <a routerLink="/gestion/operadores" routerLinkActive="active" ariaCurrentWhenActive="page"
-        >Operadores</a
-      >
-      <a routerLink="/gestion/celdas" routerLinkActive="active" ariaCurrentWhenActive="page"
-        >Celdas</a
-      >
-      <a
-        routerLink="/"
-        routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }"
-        ariaCurrentWhenActive="page"
-        >Inicio</a
-      >
-      <a routerLink="/gestion/vehiculos" routerLinkActive="active" ariaCurrentWhenActive="page"
-        >Vehículos</a
-      >
-    </nav>
-  </header>
-  <main><router-outlet /></main>
-  <footer><span>Autos Colombia</span><span>Control vehicular con claridad.</span></footer>
+<div class="app-layout">
+  <aside class="sidebar">
+    <div class="sidebar-top">
+      <a class="brand" routerLink="/" aria-label="Autos Colombia, inicio">
+        <span class="brand-mark" aria-hidden="true">AC</span>
+        <span class="brand-text">
+          <span class="brand-name">Autos Colombia</span>
+          <span class="brand-sub">GESTIÓN DE PARQUEADERO</span>
+        </span>
+      </a>
+
+      <div class="nav-section">
+        <span class="nav-label">ESPACIO DE TRABAJO</span>
+        <nav aria-label="Navegación principal">
+          <a
+            class="nav-home"
+            routerLink="/"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            ariaCurrentWhenActive="page"
+            >Inicio</a
+          >
+          <a
+            class="nav-access"
+            routerLink="/control-acceso"
+            routerLinkActive="active"
+            ariaCurrentWhenActive="page"
+            >Control de acceso</a
+          >
+          <a
+            class="nav-operators"
+            routerLink="/gestion/operadores"
+            routerLinkActive="active"
+            ariaCurrentWhenActive="page"
+            >Operadores</a
+          >
+          <a
+            class="nav-cells"
+            routerLink="/gestion/celdas"
+            routerLinkActive="active"
+            ariaCurrentWhenActive="page"
+            >Celdas</a
+          >
+          <a
+            class="nav-vehicles"
+            routerLink="/gestion/vehiculos"
+            routerLinkActive="active"
+            ariaCurrentWhenActive="page"
+            >Vehículos</a
+          >
+        </nav>
+      </div>
+    </div>
+
+    <div class="sidebar-bottom">
+      <div class="sidebar-callout">
+        <span class="callout-badge">Todo empieza por aquí</span>
+        <p>Crea operadores y celdas para habilitar tu operación.</p>
+      </div>
+      <div class="sidebar-meta">
+        <span>Colombia · America/Bogota · UTC-5</span>
+      </div>
+    </div>
+  </aside>
+
+  <div class="workspace-shell">
+    <header class="topbar">
+      <div class="breadcrumbs" aria-label="Ubicación">
+        <span class="crumb-muted">Parqueadero</span>
+        <span class="crumb-sep" aria-hidden="true">›</span>
+        <span class="crumb-current">Espacio de gestión</span>
+      </div>
+      <div class="topbar-actions">
+        <span class="status-pill">
+          <span class="pill-dot" aria-hidden="true"></span>
+          Configuración inicial
+        </span>
+        <span class="admin-badge">
+          <span class="admin-avatar" aria-hidden="true">AC</span>
+          <span>Administración</span>
+        </span>
+      </div>
+    </header>
+
+    <main class="workspace-main">
+      <div class="workspace-container">
+        <router-outlet />
+      </div>
+    </main>
+
+    <footer class="workspace-footer">
+      <div class="footer-left">
+        <span class="footer-mark" aria-hidden="true">AC</span>
+        <strong>Autos Colombia</strong>
+        <span>· Gestión de parqueadero</span>
+      </div>
+      <span class="footer-right">Una operación más clara, de entrada a salida.</span>
+    </footer>
+  </div>
 </div>

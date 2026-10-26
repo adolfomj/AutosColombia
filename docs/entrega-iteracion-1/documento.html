@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Autos Colombia - Iteración 1: Gestión de la entrada y salida de vehículos</title>
+<style>
+  @page { size: A4; margin: 16mm 15mm; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+    font-size: 10pt;
+    line-height: 1.5;
+    color: #000000;
+    margin: 0;
+  }
+  h1 {
+    font-size: 18pt;
+    color: #000000;
+    font-weight: bold;
+    border-bottom: 2px solid #000000;
+    padding-bottom: 4px;
+    page-break-before: always;
+    margin-top: 0;
+  }
+  h1.first { page-break-before: avoid; }
+  h2 {
+    font-size: 13.5pt;
+    color: #000000;
+    font-weight: bold;
+    margin: 18px 0 6px;
+    border-bottom: 1px solid #000000;
+    padding-bottom: 2px;
+    page-break-after: avoid;
+  }
+  h3 {
+    font-size: 11pt;
+    color: #000000;
+    font-weight: bold;
+    margin: 12px 0 4px;
+    page-break-after: avoid;
+  }
+  p { margin: 6px 0; color: #000000; }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 8px 0 12px;
+    font-size: 9pt;
+    page-break-inside: auto;
+    color: #000000;
+  }
+  tr { page-break-inside: avoid; }
+  th, td {
+    border: 1px solid #777777;
+    padding: 5px 7px;
+    vertical-align: top;
+    text-align: left;
+    color: #000000;
+  }
+  th { background: #f2f2f2; color: #000000; font-weight: bold; }
+  code, pre {
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 8.5pt;
+  }
+  pre {
+    background: #f7f7f7;
+    border: 1px solid #cccccc;
+    padding: 8px;
+    white-space: pre-wrap;
+    page-break-inside: avoid;
+    border-radius: 3px;
+    color: #000000;
+  }
+  .story {
+    border: 1px solid #cccccc;
+    border-left: 3.5px solid #000000;
+    border-radius: 3px;
+    padding: 7px 11px;
+    margin: 8px 0;
+    page-break-inside: avoid;
+    background: #fafafa;
+  }
+  .story h3 { margin-top: 0; color: #000000; font-weight: bold; }
+  .story ul { margin: 4px 0 0 18px; padding: 0; }
+  .fig {
+    text-align: center;
+    margin: 10px 0 14px;
+    page-break-inside: avoid;
+  }
+  .fig svg {
+    width: 100%;
+    height: auto;
+    border: 1px solid #888888;
+    background: #ffffff;
+    display: block;
+    margin: 0 auto;
+  }
+  .fig .caption {
+    font-size: 8.8pt;
+    color: #000000;
+    margin-top: 5px;
+    font-style: italic;
+  }
+  img.real {
+    width: 100%;
+    max-height: 400px;
+    object-fit: contain;
+    border: 1px solid #888888;
+    background: #ffffff;
+  }
+  .page-break { page-break-before: always; }
+
+  /* Portada estilo académico APA 7 */
+  .cover-page {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+    page-break-after: always;
+    padding: 30mm 15mm 20mm;
+    color: #000000;
+  }
+  .cover-title-area {
+    margin-top: 40px;
+  }
+  .cover-title {
+    font-size: 20pt;
+    font-weight: bold;
+    color: #000000;
+    line-height: 1.3;
+    margin-bottom: 12px;
+  }
+  .cover-subtitle {
+    font-size: 13pt;
+    color: #000000;
+    font-weight: normal;
+    margin-bottom: 30px;
+  }
+  .cover-activity {
+    font-size: 11pt;
+    font-weight: normal;
+    color: #000000;
+    border: 1px solid #999999;
+    background: #f7f7f7;
+    display: inline-block;
+    padding: 6px 16px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+  }
+  .cover-author-area {
+    margin: 40px 0;
+    font-size: 11pt;
+    line-height: 1.8;
+    color: #000000;
+  }
+  .cover-author-name {
+    font-size: 13pt;
+    font-weight: normal;
+    color: #000000;
+  }
+  .cover-footer {
+    font-size: 11pt;
+    line-height: 1.6;
+    color: #000000;
+    border-top: 1px solid #777777;
+    padding-top: 20px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== PORTADA ===================== -->
+<div class="cover-page">
+  <div class="cover-title-area">
+    <div class="cover-activity">Evidencia de Aprendizaje 1. Diseño Sistema de Información – Iteración 1</div>
+    <div class="cover-title">Autos Colombia: Sistema de Gestión de Parqueadero</div>
+    <div class="cover-subtitle">Gestión de la entrada y salida de vehículos, diseño de arquitectura y artefactos de software</div>
+  </div>
+
+  <div class="cover-author-area">
+    <div class="cover-author-name">Adolfo Miguel Jimenez Muñoz</div>
+    <div>Programa Académico: Ingeniería en Desarrollo de Software y Análisis de Datos</div>
+    <br>
+    <div><strong>Asignatura:</strong> Ingeniería de Software</div>
+    <div><strong>Código de la Materia:</strong> PREICA2602B020053</div>
+    <div><strong>Docente:</strong> Reinaldo Rojas</div>
+  </div>
+
+  <div class="cover-footer">
+    <div>Cali, 25 de octubre del 2026</div>
+  </div>
+</div>
+
+<!-- DEFINICIONES SVG GLOBALES ESTILO STARUML -->
+<svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+  <defs>
+    <!-- Sombra clásica de StarUML -->
+    <filter id="su-shadow" x="-3%" y="-3%" width="108%" height="108%">
+      <feDropShadow dx="2" dy="2" stdDeviation="1" flood-color="#000000" flood-opacity="0.18"/>
+    </filter>
+    <!-- Flecha abierta UML (dependencia / asociación dirigida) -->
+    <marker id="su-open-arrow" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 1,1 L 11,6 L 1,11" fill="none" stroke="#222222" stroke-width="1.4"/>
+    </marker>
+    <!-- Flecha triangular hueca UML (herencia / realización) -->
+    <marker id="su-triangle" viewBox="0 0 14 14" refX="13" refY="7" markerWidth="10" markerHeight="10" orient="auto-start-reverse">
+      <polygon points="1,1 13,7 1,13" fill="#ffffff" stroke="#222222" stroke-width="1.3"/>
+    </marker>
+    <!-- Símbolo UML Componente (icono esquina superior derecha) -->
+    <g id="su-comp-icon">
+      <rect x="0" y="0" width="16" height="20" fill="#ffffd8" stroke="#222222" stroke-width="1.1"/>
+      <rect x="-4" y="3" width="8" height="4" fill="#ffffd8" stroke="#222222" stroke-width="1.1"/>
+      <rect x="-4" y="12" width="8" height="4" fill="#ffffd8" stroke="#222222" stroke-width="1.1"/>
+    </g>
+    <!-- Actor Stickman de StarUML -->
+    <g id="su-actor">
+      <circle cx="0" cy="-22" r="8" fill="#ffffd8" stroke="#222222" stroke-width="1.4"/>
+      <line x1="0" y1="-14" x2="0" y2="8" stroke="#222222" stroke-width="1.4"/>
+      <line x1="-15" y1="-6" x2="15" y2="-6" stroke="#222222" stroke-width="1.4"/>
+      <line x1="0" y1="8" x2="-12" y2="26" stroke="#222222" stroke-width="1.4"/>
+      <line x1="0" y1="8" x2="12" y2="26" stroke="#222222" stroke-width="1.4"/>
+    </g>
+  </defs>
+</svg>
+
+<!-- ===================== INTRODUCCIÓN ===================== -->
+<h1 class="first">Introducción</h1>
+<p><strong>Autos Colombia</strong> es una aplicación web diseñada para gestionar el control de acceso (ingreso, consulta de estado y salida) de vehículos en un parqueadero, junto con la administración de sus catálogos base (vehículos, celdas de estacionamiento y operadores).</p>
+<p>La solución implementa una arquitectura cliente-servidor desacoplada: el backend está desarrollado en <strong>Python 3.13 con FastAPI</strong>, <strong>SQLAlchemy 2.0</strong>, <strong>Alembic</strong> y <strong>PostgreSQL 17</strong>; el frontend está construido en <strong>Angular 22 con TypeScript 6.0</strong> utilizando componentes standalone, formularios reactivos y verificación estricta de tipos y plantillas.</p>
+<p>El presente documento desarrolla los entregables correspondientes a la <strong>Iteración 1: Gestión de la entrada y salida de vehículos</strong>, alineados con el código fuente funcional alojado en el repositorio de GitHub (<code>https://github.com/adolfomj/AutosColombia</code>).</p>
+
+<h2>Alcance de la Iteración 1</h2>
+<table>
+  <tr><th style="width:50%">Incluido en la Iteración 1</th><th style="width:50%">Fuera de alcance (iteraciones futuras)</th></tr>
+  <tr>
+    <td>
+      <ul>
+        <li>Registro transaccional de entrada de vehículos asignando celda y operador de entrada con fecha/hora UTC generada en el servidor.</li>
+        <li>Validación de unicidad de estancia abierta por vehículo y por celda mediante índices únicos parciales en PostgreSQL.</li>
+        <li>Consulta en tiempo real del estado de un vehículo por placa (<em>Dentro</em>, <em>Fuera</em> o <em>No registrado</em>).</li>
+        <li>Registro transaccional de salida con bloqueo pesimista (<code>SELECT ... FOR UPDATE</code>) y asignación de operador de salida.</li>
+        <li>CRUD paginado de los catálogos de Vehículos, Celdas y Operadores con protección de integridad referencial (<code>ON DELETE RESTRICT</code>).</li>
+      </ul>
+    </td>
+    <td>
+      <ul>
+        <li>Autenticación de usuarios, sesiones y control de acceso basado en roles (RBAC).</li>
+        <li>Liquidación de tarifas, facturación, cobro por tiempo de permanencia y medios de pago.</li>
+        <li>Consulta previa de disponibilidad de celdas en tiempo real (la ocupación se valida transaccionalmente al registrar la entrada).</li>
+        <li>Edición o eliminación de registros históricos de estancias.</li>
+      </ul>
+    </td>
+  </tr>
+</table>
+
+<h2>Contenido de entregables</h2>
+<ol>
+  <li>Requerimientos funcionales y no funcionales para la gestión de entrada y salida de vehículos.</li>
+  <li>Historias de usuario asociadas.</li>
+  <li>Arquitectura del sistema de la aplicación (notación StarUML).</li>
+  <li>Referencia de prototipos/mockups de las historias de usuario en Figma.</li>
+  <li>Modelo Entidad-Relación (MER), Modelo Relacional (MR) y Modelo Físico de base de datos.</li>
+  <li>Diagrama de casos de uso (notación StarUML).</li>
+  <li>Diagrama de clases (notación StarUML).</li>
+  <li>Diagrama de paquetes (notación StarUML).</li>
+  <li>Código fuente corriendo y en repositorio en GitHub.</li>
+</ol>
+
+<!-- ===================== 1. REQUERIMIENTOS ===================== -->
+<h1>Entregables — Iteración 1: Gestión de la entrada y salida de vehículos</h1>
+
+<h2>1. Requerimientos funcionales y no funcionales</h2>
+
+<h3>1.1 Requerimientos funcionales (RF)</h3>
+<table>
+  <tr><th style="width:9%">Código</th><th>Descripción del requerimiento funcional</th><th style="width:11%">Prioridad</th></tr>
+  <tr><td><strong>RF-01</strong></td><td>El sistema debe permitir registrar la <strong>entrada</strong> de un vehículo recibiendo la placa, el identificador de la celda y el identificador del operador de entrada, asignando automáticamente la fecha y hora actual del servidor en UTC.</td><td>Alta</td></tr>
+  <tr><td><strong>RF-02</strong></td><td>El sistema debe verificar al registrar una entrada que el vehículo (por placa), la celda y el operador existan en la base de datos; si alguno no existe, debe rechazar la operación con estado HTTP 404.</td><td>Alta</td></tr>
+  <tr><td><strong>RF-03</strong></td><td>El sistema debe impedir el registro de entrada si el vehículo ya cuenta con una estancia abierta (sin fecha de salida), devolviendo estado HTTP 409 con el mensaje <em>«El vehículo ya está dentro.»</em>.</td><td>Alta</td></tr>
+  <tr><td><strong>RF-04</strong></td><td>El sistema debe impedir el registro de entrada en una celda que ya tiene una estancia abierta, devolviendo estado HTTP 409 con el mensaje <em>«La celda está ocupada.»</em>.</td><td>Alta</td></tr>
+  <tr><td><strong>RF-05</strong></td><td>El sistema debe permitir registrar la <strong>salida</strong> de un vehículo recibiendo únicamente su placa y el identificador del operador de salida, cerrando la estancia abierta con la fecha y hora UTC del servidor.</td><td>Alta</td></tr>
+  <tr><td><strong>RF-06</strong></td><td>El sistema debe rechazar el intento de salida de un vehículo que no tenga una estancia abierta activa, devolviendo estado HTTP 409 con el mensaje <em>«El vehículo no tiene una estancia abierta.»</em>.</td><td>Alta</td></tr>
+  <tr><td><strong>RF-07</strong></td><td>El sistema debe permitir <strong>consultar el estado actual</strong> de un vehículo por su placa, indicando sus datos básicos, si se encuentra dentro o fuera (<code>esta_dentro</code>) y, en caso de estar dentro, los datos de la estancia abierta y de la celda asignada.</td><td>Alta</td></tr>
+  <tr><td><strong>RF-08</strong></td><td>El sistema debe normalizar automáticamente las placas de vehículos y los códigos de celdas recortando espacios extremos y convirtiendo los caracteres a mayúsculas tanto en el frontend como en el backend.</td><td>Alta</td></tr>
+  <tr><td><strong>RF-09</strong></td><td>El sistema debe almacenar en cada estancia la trazabilidad tanto del operador que dio ingreso (<code>operador_entrada_id</code>) como del operador que registró la salida (<code>operador_salida_id</code>).</td><td>Media</td></tr>
+  <tr><td><strong>RF-10</strong></td><td>El sistema debe preservar el historial íntegro de estancias cerradas sin exponer operaciones de edición ni borrado sobre la tabla <code>estancia</code>.</td><td>Media</td></tr>
+  <tr><td><strong>RF-11</strong></td><td>El sistema debe proveer operaciones CRUD y listado paginado para el catálogo de <strong>vehículos</strong> (placa única, marca, modelo/año entre 1 y 9999, color y tipo restringido a <code>MOTO</code>, <code>AUTOMOVIL</code> o <code>CAMIONETA</code>).</td><td>Alta</td></tr>
+  <tr><td><strong>RF-12</strong></td><td>El sistema debe proveer operaciones CRUD y listado paginado para el catálogo de <strong>celdas</strong> (código único normalizado y tipo en texto libre obligatorio).</td><td>Alta</td></tr>
+  <tr><td><strong>RF-13</strong></td><td>El sistema debe proveer operaciones CRUD y listado paginado para el catálogo de <strong>operadores</strong> (nombre completo y teléfono obligatorios).</td><td>Alta</td></tr>
+  <tr><td><strong>RF-14</strong></td><td>El sistema debe impedir la eliminación de vehículos, celdas u operadores que tengan estancias registradas (abiertas o históricas), respondiendo HTTP 409 sin realizar borrados en cascada.</td><td>Media</td></tr>
+  <tr><td><strong>RF-15</strong></td><td>La pantalla de control de acceso debe cargar todas las páginas de los catálogos de celdas y operadores avanzando por <code>offset</code> (con <code>limit=100</code>) hasta completar el total de registros antes de habilitar la captura.</td><td>Media</td></tr>
+  <tr><td><strong>RF-16</strong></td><td>El sistema debe exponer el endpoint <code>GET /health</code> devolviendo HTTP 200 y <code>{"status": "ok"}</code> para verificar la disponibilidad del servicio.</td><td>Baja</td></tr>
+</table>
+
+<h3>1.2 Requerimientos no funcionales (RNF)</h3>
+<table>
+  <tr><th style="width:9%">Código</th><th style="width:18%">Atributo de calidad</th><th>Especificación técnica</th></tr>
+  <tr><td><strong>RNF-01</strong></td><td>Integridad de datos</td><td>El motor PostgreSQL debe hacer cumplir las reglas mediante restricciones declarativas: claves foráneas con <code>ON DELETE RESTRICT</code>, restricciones <code>CHECK</code> de formato/rango y dos índices únicos parciales (<code>WHERE salida IS NULL</code>) sobre <code>vehiculo_id</code> y <code>celda_id</code>.</td></tr>
+  <tr><td><strong>RNF-02</strong></td><td>Control de concurrencia</td><td>Cada operación de negocio debe ejecutarse en una transacción atómica. El cierre de estancia debe bloquear la fila activa con <code>SELECT ... FOR UPDATE</code> para evitar condiciones de carrera ante solicitudes simultáneas.</td></tr>
+  <tr><td><strong>RNF-03</strong></td><td>Seguridad y privacidad</td><td>Las credenciales de base de datos se leen desde variables de entorno o <code>backend/.env</code> (excluido de Git). Los errores internos de SQLAlchemy/psycopg se capturan y transforman en respuestas HTTP 409, 422 o 503 sin exponer trazas ni cadenas de conexión.</td></tr>
+  <tr><td><strong>RNF-04</strong></td><td>Validación estricta de contratos</td><td>Los esquemas Pydantic deben configurar <code>extra="forbid"</code>, rechazar booleanos donde se esperan enteros, exigir enteros positivos dentro del rango <code>BIGINT</code> (1 a 9223372036854775807) y prohibir que el cliente envíe fechas o identificadores autogenerados.</td></tr>
+  <tr><td><strong>RNF-05</strong></td><td>Usabilidad y prevención de errores</td><td>La interfaz Angular debe bloquear los botones y formularios mientras exista una petición en curso, invalidar resultados previos cuando el usuario modifica la placa consultada y presentar mensajes de validación y conflicto en español.</td></tr>
+  <tr><td><strong>RNF-06</strong></td><td>Consistencia horaria</td><td>Las marcas de tiempo deben almacenarse en PostgreSQL como <code>TIMESTAMP WITH TIME ZONE</code> en UTC y formatearse en el navegador siempre bajo el huso horario <code>America/Bogota</code> mediante <code>Intl.DateTimeFormat</code>.</td></tr>
+  <tr><td><strong>RNF-07</strong></td><td>Mantenibilidad</td><td>Separación estricta de responsabilidades en capas (<code>routers</code>, <code>schemas</code>, <code>services</code>, <code>models</code> en backend; componentes standalone, <code>services</code> y <code>models</code> en frontend con <code>strict</code> y <code>strictTemplates</code> habilitados).</td></tr>
+  <tr><td><strong>RNF-08</strong></td><td>Verificabilidad</td><td>El proyecto debe contar con pruebas automatizadas reproducibles: 111 pruebas en backend con <code>pytest</code> y <code>TestClient</code> (incluyendo pruebas de concurrencia e integración sobre PostgreSQL con rollback) y 38 pruebas unitarias en frontend con Vitest/Angular.</td></tr>
+</table>
+
+<!-- ===================== 2. HISTORIAS DE USUARIO ===================== -->
+<h2>2. Historias de usuario asociadas</h2>
+
+<div class="story">
+  <h3>HU-01: Registrar entrada de un vehículo al parqueadero</h3>
+  <p><strong>Como</strong> operador de control de acceso,<br>
+  <strong>Quiero</strong> registrar el ingreso de un vehículo indicando su placa, la celda asignada y mi operador,<br>
+  <strong>Para</strong> ocupar formalmente la celda e iniciar el control de su estancia con la hora oficial del sistema.</p>
+  <p><strong>Criterios de aceptación:</strong></p>
+  <ul>
+    <li><strong>CA-1.1 (Registro exitoso):</strong> Dado un vehículo previamente registrado sin estancia abierta y una celda libre, cuando ingreso la placa (con o sin espacios/minúsculas), selecciono la celda y el operador y envío el formulario, entonces el sistema registra la estancia (HTTP 201) y muestra la confirmación con la placa normalizada, código de celda y fecha/hora de ingreso en zona <code>America/Bogota</code>.</li>
+    <li><strong>CA-1.2 (Rechazo por vehículo dentro):</strong> Dado un vehículo con una estancia abierta activa, cuando intento registrar nuevamente su entrada, entonces el sistema rechaza la solicitud (HTTP 409) y muestra el mensaje <em>«El vehículo ya está dentro.»</em>.</li>
+    <li><strong>CA-1.3 (Rechazo por celda ocupada):</strong> Dada una celda que tiene una estancia abierta activa, cuando intento asignar otro vehículo a esa misma celda, entonces el sistema rechaza la solicitud (HTTP 409) y muestra <em>«La celda está ocupada.»</em>.</li>
+    <li><strong>CA-1.4 (Vehículo inexistente):</strong> Dada una placa que no existe en el catálogo de vehículos, cuando intento registrar su entrada, entonces el sistema responde HTTP 404 y muestra <em>«Vehículo no encontrado.»</em>.</li>
+    <li><strong>CA-1.5 (Validación de campos obligatorios):</strong> Si la placa está vacía o compuesta solo por espacios, o no se ha seleccionado celda u operador, el formulario impide el envío y señala el campo requerido.</li>
+  </ul>
+</div>
+
+<div class="story">
+  <h3>HU-02: Consultar el estado actual de un vehículo por placa</h3>
+  <p><strong>Como</strong> operador de control de acceso,<br>
+  <strong>Quiero</strong> consultar una placa en cualquier momento,<br>
+  <strong>Para</strong> verificar si el vehículo se encuentra dentro del parqueadero (y en qué celda) o si está fuera.</p>
+  <p><strong>Criterios de aceptación:</strong></p>
+  <ul>
+    <li><strong>CA-2.1 (Vehículo dentro):</strong> Dado un vehículo con estancia abierta, cuando consulto su placa, entonces la pantalla muestra el estado <strong>Dentro</strong>, la marca, el color, el código de la celda ocupada, la fecha/hora de entrada en Bogotá y habilita la opción de confirmar su salida.</li>
+    <li><strong>CA-2.2 (Vehículo fuera):</strong> Dado un vehículo registrado en el catálogo pero sin estancia abierta, cuando consulto su placa, entonces la pantalla muestra <strong>Fuera — Vehículo registrado sin estancia abierta</strong> sin mostrar el botón de salida.</li>
+    <li><strong>CA-2.3 (Vehículo no registrado):</strong> Dada una placa que no figura en el catálogo, cuando realizo la consulta, entonces el sistema informa <em>«Vehículo no registrado.»</em> (HTTP 404).</li>
+    <li><strong>CA-2.4 (Invalidación al editar la placa):</strong> Cuando modifico el texto del campo de placa consultada, el resultado anterior se limpia de inmediato y se descartan respuestas HTTP tardías de consultas previas.</li>
+  </ul>
+</div>
+
+<div class="story">
+  <h3>HU-03: Registrar salida de un vehículo</h3>
+  <p><strong>Como</strong> operador de control de acceso,<br>
+  <strong>Quiero</strong> confirmar la salida de un vehículo que se encuentra dentro seleccionando el operador de turno,<br>
+  <strong>Para</strong> cerrar su estancia con la hora del servidor y liberar la celda para nuevos ingresos.</p>
+  <p><strong>Criterios de aceptación:</strong></p>
+  <ul>
+    <li><strong>CA-3.1 (Cierre exitoso):</strong> Dado un vehículo consultado cuyo estado es <em>Dentro</em>, cuando selecciono el operador de salida y pulso <em>«Confirmar salida»</em>, entonces el sistema envía únicamente <code>placa</code> y <code>operador_id</code>, asigna la fecha de salida en UTC (HTTP 200), muestra el mensaje de confirmación y refresca automáticamente el estado del vehículo a <strong>Fuera</strong>.</li>
+    <li><strong>CA-3.2 (Liberación inmediata de celda):</strong> Una vez confirmada la salida, la celda asociada queda libre inmediatamente para admitir la entrada de otro vehículo.</li>
+    <li><strong>CA-3.3 (Conflicto o estancia ya cerrada):</strong> Si otro operador cerró la estancia simultáneamente, el sistema responde HTTP 409, informa el conflicto y exige volver a consultar la placa antes de reintentar.</li>
+  </ul>
+</div>
+
+<div class="story">
+  <h3>HU-04: Administrar el catálogo de vehículos</h3>
+  <p><strong>Como</strong> administrador del parqueadero,<br>
+  <strong>Quiero</strong> registrar, consultar de forma paginada, editar y eliminar vehículos,<br>
+  <strong>Para</strong> mantener actualizado el padrón de vehículos habilitados en el control de acceso.</p>
+  <p><strong>Criterios de aceptación:</strong></p>
+  <ul>
+    <li><strong>CA-4.1:</strong> Permite crear vehículos con placa, marca, modelo (año entero entre 1 y 9999), color y tipo (<code>MOTO</code>, <code>AUTOMOVIL</code> o <code>CAMIONETA</code>), normalizando la placa a mayúsculas.</li>
+    <li><strong>CA-4.2:</strong> Rechaza placas duplicadas con HTTP 409 y bloquea la eliminación si el vehículo posee estancias asociadas.</li>
+  </ul>
+</div>
+
+<div class="story">
+  <h3>HU-05: Administrar el catálogo de celdas de estacionamiento</h3>
+  <p><strong>Como</strong> administrador del parqueadero,<br>
+  <strong>Quiero</strong> crear, listar, actualizar y eliminar celdas con su código único y tipo,<br>
+  <strong>Para</strong> disponer de los espacios físicos asignables durante el ingreso de vehículos.</p>
+  <p><strong>Criterios de aceptación:</strong></p>
+  <ul>
+    <li><strong>CA-5.1:</strong> El código de la celda se normaliza en mayúsculas sin espacios exteriores y no permite duplicados (HTTP 409).</li>
+    <li><strong>CA-5.2:</strong> No permite eliminar una celda que tenga estancias registradas (HTTP 409 por restricción <code>RESTRICT</code>).</li>
+  </ul>
+</div>
+
+<div class="story">
+  <h3>HU-06: Administrar el catálogo de operadores</h3>
+  <p><strong>Como</strong> administrador del parqueadero,<br>
+  <strong>Quiero</strong> crear, listar, editar y eliminar operadores indicando su nombre y teléfono,<br>
+  <strong>Para</strong> identificar al responsable de cada operación de entrada y salida.</p>
+  <p><strong>Criterios de aceptación:</strong></p>
+  <ul>
+    <li><strong>CA-6.1:</strong> Exige nombre y teléfono no vacíos; impide eliminar un operador referenciado en estancias de entrada o salida (HTTP 409).</li>
+  </ul>
+</div>
+
+<!-- ===================== 3. ARQUITECTURA STARUML ===================== -->
+<h2 class="page-break">3. Arquitectura del sistema de la aplicación (StarUML)</h2>
+<p>La arquitectura de <strong>Autos Colombia</strong> sigue un diseño cliente-servidor en tres capas: presentación SPA en <strong>Angular 22</strong>, capa de servicios y lógica de dominio en <strong>FastAPI (Python 3.13)</strong> y capa de persistencia relacional en <strong>PostgreSQL 17</strong>. El siguiente diagrama en notación de componentes y nodos de <strong>StarUML</strong> representa los subsistemas, artefactos y protocolos de comunicación:</p>
+
+<div class="fig">
+  <svg viewBox="0 0 880 470" xmlns="http://www.w3.org/2000/svg" font-family="Tahoma, Arial, sans-serif">
+    <!-- Marco de diagrama StarUML -->
+    <rect x="4" y="4" width="872" height="462" fill="#ffffff" stroke="#222222" stroke-width="1.3"/>
+    <polygon points="4,4 245,4 245,18 235,28 4,28" fill="#eeeeee" stroke="#222222" stroke-width="1.2"/>
+    <text x="12" y="20" font-size="11" font-weight="bold" fill="#111111">cmp</text>
+    <text x="42" y="20" font-size="11" fill="#111111">ArquitecturaAutosColombia</text>
+
+    <!-- NODO 1: Cliente Navegador / Frontend Angular -->
+    <g filter="url(#su-shadow)">
+      <rect x="24" y="48" width="245" height="390" fill="#ffffd8" stroke="#222222" stroke-width="1.3"/>
+      <line x1="24" y1="86" x2="269" y2="86" stroke="#222222" stroke-width="1.1"/>
+    </g>
+    <text x="146" y="65" font-size="9.5" text-anchor="middle" fill="#333333">«subsystem»</text>
+    <text x="146" y="79" font-size="11.5" font-weight="bold" text-anchor="middle" fill="#111111">Frontend SPA (Angular 22)</text>
+
+    <!-- Componentes internos Frontend -->
+    <g filter="url(#su-shadow)">
+      <rect x="42" y="106" width="208" height="64" fill="#ffffff" stroke="#222222" stroke-width="1.2"/>
+      <use href="#su-comp-icon" x="228" y="112"/>
+    </g>
+    <text x="138" y="124" font-size="9" text-anchor="middle" fill="#333333">«component»</text>
+    <text x="138" y="138" font-size="10.5" font-weight="bold" text-anchor="middle">ControlAccesoComponent</text>
+    <text x="138" y="153" font-size="8.8" text-anchor="middle" fill="#444444">/control-acceso (Formularios Reactivos)</text>
+
+    <g filter="url(#su-shadow)">
+      <rect x="42" y="186" width="208" height="64" fill="#ffffff" stroke="#222222" stroke-width="1.2"/>
+      <use href="#su-comp-icon" x="228" y="192"/>
+    </g>
+    <text x="138" y="204" font-size="9" text-anchor="middle" fill="#333333">«component»</text>
+    <text x="138" y="218" font-size="10.5" font-weight="bold" text-anchor="middle">CatalogosComponents</text>
+    <text x="138" y="233" font-size="8.8" text-anchor="middle" fill="#444444">Vehiculos · Celdas · Operadores · Home</text>
+
+    <g filter="url(#su-shadow)">
+      <rect x="42" y="280" width="208" height="68" fill="#ffffff" stroke="#222222" stroke-width="1.2"/>
+      <use href="#su-comp-icon" x="228" y="286"/>
+    </g>
+    <text x="138" y="298" font-size="9" text-anchor="middle" fill="#333333">«component»</text>
+    <text x="138" y="312" font-size="10.5" font-weight="bold" text-anchor="middle">HttpServices (Angular)</text>
+    <text x="138" y="326" font-size="8.5" text-anchor="middle" fill="#444444">EstanciasService · ApiService</text>
+    <text x="138" y="339" font-size="8.5" text-anchor="middle" fill="#444444">CeldasService · OperadoresService</text>
+
+    <g filter="url(#su-shadow)">
+      <rect x="42" y="368" width="208" height="52" fill="#ffffff" stroke="#222222" stroke-width="1.2"/>
+      <use href="#su-comp-icon" x="228" y="374"/>
+    </g>
+    <text x="138" y="385" font-size="9" text-anchor="middle" fill="#333333">«artifact»</text>
+    <text x="138" y="399" font-size="10" font-weight="bold" text-anchor="middle">proxy.conf.json (:4200 → :8000)</text>
+    <text x="138" y="412" font-size="8.5" text-anchor="middle" fill="#444444">/estancias, /vehiculos, /celdas, /operadores</text>
+
+    <!-- Flechas internas Frontend -->
+    <line x1="146" y1="170" x2="146" y2="280" stroke="#222222" stroke-width="1.1" stroke-dasharray="4,3" marker-end="url(#su-open-arrow)"/>
+    <line x1="195" y1="250" x2="195" y2="280" stroke="#222222" stroke-width="1.1" stroke-dasharray="4,3" marker-end="url(#su-open-arrow)"/>
+    <line x1="146" y1="348" x2="146" y2="368" stroke="#222222" stroke-width="1.1" stroke-dasharray="4,3" marker-end="url(#su-open-arrow)"/>
+
+    <!-- NODO 2: Backend FastAPI -->
+    <g filter="url(#su-shadow)">
+      <rect x="335" y="48" width="265" height="390" fill="#ffffd8" stroke="#222222" stroke-width="1.3"/>
+      <line x1="335" y1="86" x2="600" y2="86" stroke="#222222" stroke-width="1.1"/>
+    </g>
+    <text x="467" y="65" font-size="9.5" text-anchor="middle" fill="#333333">«subsystem»</text>
+    <text x="467" y="79" font-size="11.5" font-weight="bold" text-anchor="middle" fill="#111111">Backend API (FastAPI :8000)</text>
+
+    <g filter="url(#su-shadow)">
+      <rect x="355" y="106" width="225" height="62" fill="#ffffff" stroke="#222222" stroke-width="1.2"/>
+      <use href="#su-comp-icon" x="558" y="112"/>
+    </g>
+    <text x="460" y="124" font-size="9" text-anchor="middle" fill="#333333">«component»</text>
+    <text x="460" y="138" font-size="10.5" font-weight="bold" text-anchor="middle">APIRouters (REST)</text>
+    <text x="460" y="153" font-size="8.5" text-anchor="middle" fill="#444444">estancias · vehiculos · celdas · operadores</text>
+
+    <g filter="url(#su-shadow)">
+      <rect x="355" y="186" width="225" height="58" fill="#ffffff" stroke="#222222" stroke-width="1.2"/>
+      <use href="#su-comp-icon" x="558" y="192"/>
+    </g>
+    <text x="460" y="203" font-size="9" text-anchor="middle" fill="#333333">«component»</text>
+    <text x="460" y="217" font-size="10.5" font-weight="bold" text-anchor="middle">PydanticSchemas</text>
+    <text x="460" y="232" font-size="8.5" text-anchor="middle" fill="#444444">Validación de contratos y serialización</text>
+
+    <g filter="url(#su-shadow)">
+      <rect x="355" y="264" width="225" height="68" fill="#ffffff" stroke="#222222" stroke-width="1.2"/>
+      <use href="#su-comp-icon" x="558" y="270"/>
+    </g>
+    <text x="460" y="282" font-size="9" text-anchor="middle" fill="#333333">«component»</text>
+    <text x="460" y="296" font-size="10.5" font-weight="bold" text-anchor="middle">DomainServices</text>
+    <text x="460" y="310" font-size="8.5" text-anchor="middle" fill="#444444">ServicioEstancia · Transacciones</text>
+    <text x="460" y="323" font-size="8.5" text-anchor="middle" fill="#444444">Traducción de errores (404 / 409 / 422 / 503)</text>
+
+    <g filter="url(#su-shadow)">
+      <rect x="355" y="352" width="225" height="68" fill="#ffffff" stroke="#222222" stroke-width="1.2"/>
+      <use href="#su-comp-icon" x="558" y="358"/>
+    </g>
+    <text x="460" y="370" font-size="9" text-anchor="middle" fill="#333333">«component»</text>
+    <text x="460" y="384" font-size="10.5" font-weight="bold" text-anchor="middle">SQLAlchemyORM &amp; Database</text>
+    <text x="460" y="398" font-size="8.5" text-anchor="middle" fill="#444444">Vehiculo · Celda · Operador · Estancia</text>
+    <text x="460" y="411" font-size="8.5" text-anchor="middle" fill="#444444">get_session() · load_database_settings()</text>
+
+    <!-- Flechas internas Backend -->
+    <line x1="460" y1="168" x2="460" y2="186" stroke="#222222" stroke-width="1.1" stroke-dasharray="4,3" marker-end="url(#su-open-arrow)"/>
+    <line x1="415" y1="168" x2="415" y2="264" stroke="#222222" stroke-width="1.1" stroke-dasharray="4,3" marker-end="url(#su-open-arrow)"/>
+    <line x1="460" y1="332" x2="460" y2="352" stroke="#222222" stroke-width="1.1" stroke-dasharray="4,3" marker-end="url(#su-open-arrow)"/>
+
+    <!-- NODO 3: Base de Datos PostgreSQL y Alembic -->
+    <g filter="url(#su-shadow)">
+      <rect x="655" y="106" width="198" height="190" fill="#ffffd8" stroke="#222222" stroke-width="1.3"/>
+      <line x1="655" y1="144" x2="853" y2="144" stroke="#222222" stroke-width="1.1"/>
+    </g>
+    <text x="754" y="123" font-size="9.5" text-anchor="middle" fill="#333333">«database»</text>
+    <text x="754" y="137" font-size="11.5" font-weight="bold" text-anchor="middle">PostgreSQL 17 (:5432)</text>
+    <!-- Cilindro DB interno -->
+    <path d="M 704,168 C 704,158 804,158 804,168 L 804,245 C 804,255 704,255 704,245 Z" fill="#ffffff" stroke="#222222" stroke-width="1.2"/>
+    <ellipse cx="754" cy="168" rx="50" ry="9" fill="#f0f0e0" stroke="#222222" stroke-width="1.2"/>
+    <text x="754" y="196" font-size="9.5" font-weight="bold" text-anchor="middle">autos_colombia</text>
+    <text x="754" y="211" font-size="8.5" text-anchor="middle" fill="#333333">vehiculo · celda</text>
+    <text x="754" y="224" font-size="8.5" text-anchor="middle" fill="#333333">operador · estancia</text>
+    <text x="754" y="238" font-size="8" text-anchor="middle" fill="#555555">UQ parciales · FK RESTRICT</text>
+    <text x="754" y="278" font-size="8.5" text-anchor="middle" fill="#333333">SELECT ... FOR UPDATE</text>
+
+    <g filter="url(#su-shadow)">
+      <rect x="655" y="330" width="198" height="90" fill="#ffffd8" stroke="#222222" stroke-width="1.3"/>
+      <use href="#su-comp-icon" x="831" y="336"/>
+    </g>
+    <text x="748" y="350" font-size="9" text-anchor="middle" fill="#333333">«component»</text>
+    <text x="748" y="364" font-size="10.5" font-weight="bold" text-anchor="middle">Alembic Migrations</text>
+    <text x="748" y="381" font-size="8.8" text-anchor="middle" fill="#444444">0001_modelos_iniciales.py</text>
+    <text x="748" y="395" font-size="8.8" text-anchor="middle" fill="#444444">0002_estancia.py</text>
+
+    <!-- Conexiones entre subsistemas -->
+    <!-- Proxy Frontend -> APIRouters -->
+    <polyline points="250,394 302,394 302,137 355,137" fill="none" stroke="#222222" stroke-width="1.3" marker-end="url(#su-open-arrow)"/>
+    <text x="302" y="128" font-size="8.5" text-anchor="middle" fill="#111111">«HTTP/JSON»</text>
+
+    <!-- SQLAlchemy -> PostgreSQL -->
+    <polyline points="580,386 622,386 622,205 655,205" fill="none" stroke="#222222" stroke-width="1.3" marker-end="url(#su-open-arrow)"/>
+    <text x="618" y="196" font-size="8.5" text-anchor="middle" fill="#111111">«psycopg 3»</text>
+
+    <!-- Alembic -> PostgreSQL -->
+    <line x1="754" y1="330" x2="754" y2="296" stroke="#222222" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#su-open-arrow)"/>
+    <text x="795" y="317" font-size="8.5" text-anchor="middle" fill="#111111">«DDL upgrade»</text>
+  </svg>
+  <div class="caption">Figura 1. Diagrama de arquitectura y componentes del sistema en estilo StarUML.</div>
+</div>
+
+<!-- ===================== 4. MOCKUPS FIGMA ===================== -->
+<h2>4. Mockups de las historias de usuario en Figma</h2>
+<p>Prototipos de alta fidelidad diseñados en <strong>Figma</strong> para cada una de las historias de usuario de la Iteración 1.</p>
+<p><strong>Enlace al prototipo en Figma:</strong> <a href="https://www.figma.com/design/vyhqTScnvCqhiDo7uFfjYr/Autos-COlombia?node-id=0-1&amp;t=G7VoxEQxZx18PPrh-1">https://www.figma.com/design/vyhqTScnvCqhiDo7uFfjYr/Autos-COlombia?node-id=0-1&amp;t=G7VoxEQxZx18PPrh-1</a></p>
+<table>
+  <tr><th style="width:14%">Historia</th><th style="width:28%">Pantalla en Figma</th><th style="width:22%">Ruta Angular</th><th>Elementos clave representados</th></tr>
+  <tr><td><strong>HU-01, HU-02, HU-03</strong></td><td>Control de acceso (Entrada, Consulta y Salida)</td><td><code>/control-acceso</code></td><td>Actualización de catálogos, formulario de registro de entrada con celda y operador, consulta de estado por placa y confirmación de salida con zona horaria <code>America/Bogota</code>.</td></tr>
+  <tr><td><strong>HU-04</strong></td><td>Gestión de vehículos</td><td><code>/gestion/vehiculos</code></td><td>Listado paginado, formulario reactivo de registro/edición y confirmación de eliminación.</td></tr>
+  <tr><td><strong>HU-05</strong></td><td>Gestión de celdas</td><td><code>/gestion/celdas</code></td><td>Listado paginado de celdas con código normalizado y tipo libre.</td></tr>
+  <tr><td><strong>HU-06</strong></td><td>Gestión de operadores</td><td><code>/gestion/operadores</code></td><td>Listado paginado de operadores con nombre y teléfono.</td></tr>
+  <tr><td><strong>RF-16</strong></td><td>Inicio y estado del servicio</td><td><code>/</code></td><td>Resumen operativo y verificación de salud de la API (<code>GET /health</code>).</td></tr>
+</table>
+
+<div class="fig">
+  <img class="real" src="img/Control de acceso.png" alt="Mockup Figma - Control de acceso">
+  <div class="caption">Mockup Figma 1. Pantalla de Control de acceso (HU-01 Registrar entrada, HU-02 Consultar estado, HU-03 Registrar salida).</div>
+</div>
+
+<div class="fig">
+  <img class="real" src="img/Vehículos.png" alt="Mockup Figma - Vehículos">
+  <div class="caption">Mockup Figma 2. Pantalla de Gestión de vehículos (HU-04).</div>
+</div>
+
+<div class="fig">
+  <img class="real" src="img/Celdas.png" alt="Mockup Figma - Celdas">
+  <div class="caption">Mockup Figma 3. Pantalla de Gestión de celdas (HU-05).</div>
+</div>
+
+<div class="fig">
+  <img class="real" src="img/Operadores.png" alt="Mockup Figma - Operadores">
+  <div class="caption">Mockup Figma 4. Pantalla de Gestión de operadores (HU-06).</div>
+</div>
+
+<div class="fig">
+  <img class="real" src="img/Inicio.png" alt="Mockup Figma - Inicio">
+  <div class="caption">Mockup Figma 5. Pantalla de Inicio y estado del sistema (RF-16).</div>
+</div>
+
+<!-- ===================== 5. MER, MR Y MODELO FÍSICO ===================== -->
+<h2 class="page-break">5. Modelo Entidad-Relación (MER), Modelo Relacional (MR) y Modelo Físico</h2>
+
+<h3>5.1 Modelo Entidad-Relación conceptual (MER en estilo StarUML ERD)</h3>
+<p>En el dominio del problema, una <strong>Estancia</strong> vincula un <strong>Vehículo</strong> con una <strong>Celda</strong> durante un intervalo de tiempo determinado por una fecha de entrada obligatoria y una fecha de salida opcional (nula mientras el vehículo permanece dentro). Cada estancia registra obligatoriamente el <strong>Operador</strong> que procesó la entrada y, una vez finalizada, el <strong>Operador</strong> que procesó la salida.</p>
+
+<div class="fig">
+  <svg viewBox="0 0 860 320" xmlns="http://www.w3.org/2000/svg" font-family="Tahoma, Arial, sans-serif">
+    <!-- Marco StarUML ERD -->
+    <rect x="4" y="4" width="852" height="312" fill="#ffffff" stroke="#222222" stroke-width="1.3"/>
+    <polygon points="4,4 240,4 240,18 230,28 4,28" fill="#eeeeee" stroke="#222222" stroke-width="1.2"/>
+    <text x="12" y="20" font-size="11" font-weight="bold" fill="#111111">erd</text>
+    <text x="42" y="20" font-size="11" fill="#111111">MER_Conceptual_AutosColombia</text>
+
+    <!-- Entidad VEHICULO -->
+    <g filter="url(#su-shadow)">
+      <rect x="35" y="48" width="190" height="122" fill="#ffffd8" stroke="#222222" stroke-width="1.3"/>
+      <line x1="35" y1="74" x2="225" y2="74" stroke="#222222" stroke-width="1.2"/>
+    </g>
+    <text x="130" y="66" font-size="11.5" font-weight="bold" text-anchor="middle">VEHICULO</text>
+    <text x="46" y="92" font-size="9.5" font-weight="bold">🔑 placa (identificador)</text>
+    <text x="46" y="108" font-size="9.5">• marca</text>
+    <text x="46" y="124" font-size="9.5">• modelo (año)</text>
+    <text x="46" y="140" font-size="9.5">• color</text>
+    <text x="46" y="156" font-size="9.5">• tipo (MOTO | AUTOMOVIL | CAMIONETA)</text>
+
+    <!-- Entidad CELDA -->
+    <g filter="url(#su-shadow)">
+      <rect x="35" y="202" width="190" height="84" fill="#ffffd8" stroke="#222222" stroke-width="1.3"/>
+      <line x1="35" y1="228" x2="225" y2="228" stroke="#222222" stroke-width="1.2"/>
+    </g>
+    <text x="130" y="220" font-size="11.5" font-weight="bold" text-anchor="middle">CELDA</text>
+    <text x="46" y="248" font-size="9.5" font-weight="bold">🔑 codigo (identificador)</text>
+    <text x="46" y="266" font-size="9.5">• tipo (espacio asignable)</text>
+
+    <!-- Entidad ESTANCIA (Centro) -->
+    <g filter="url(#su-shadow)">
+      <rect x="345" y="110" width="195" height="110" fill="#ffffd8" stroke="#222222" stroke-width="1.3"/>
+      <line x1="345" y1="136" x2="540" y2="136" stroke="#222222" stroke-width="1.2"/>
+    </g>
+    <text x="442" y="128" font-size="11.5" font-weight="bold" text-anchor="middle">ESTANCIA</text>
+    <text x="358" y="158" font-size="9.5">• entrada (fecha y hora UTC)</text>
+    <text x="358" y="178" font-size="9.5">○ salida (fecha y hora UTC, opcional)</text>
+    <text x="358" y="198" font-size="8.8" font-style="italic" fill="#444444">Abierta mientras salida sea nula</text>
+
+    <!-- Entidad OPERADOR -->
+    <g filter="url(#su-shadow)">
+      <rect x="655" y="115" width="175" height="96" fill="#ffffd8" stroke="#222222" stroke-width="1.3"/>
+      <line x1="655" y1="141" x2="830" y2="141" stroke="#222222" stroke-width="1.2"/>
+    </g>
+    <text x="742" y="133" font-size="11.5" font-weight="bold" text-anchor="middle">OPERADOR</text>
+    <text x="668" y="163" font-size="9.5">• nombre</text>
+    <text x="668" y="183" font-size="9.5">• telefono</text>
+
+    <!-- Relación VEHICULO ||--o{ ESTANCIA -->
+    <polyline points="225,112 285,112 285,145 345,145" fill="none" stroke="#222222" stroke-width="1.3"/>
+    <!-- Uno y solo uno en VEHICULO -->
+    <line x1="233" y1="105" x2="233" y2="119" stroke="#222222" stroke-width="1.4"/>
+    <line x1="239" y1="105" x2="239" y2="119" stroke="#222222" stroke-width="1.4"/>
+    <!-- Cero o muchos en ESTANCIA -->
+    <circle cx="330" cy="145" r="4.5" fill="#ffffff" stroke="#222222" stroke-width="1.3"/>
+    <line x1="335" y1="145" x2="345" y2="138" stroke="#222222" stroke-width="1.3"/>
+    <line x1="335" y1="145" x2="345" y2="152" stroke="#222222" stroke-width="1.3"/>
+    <text x="285" y="104" font-size="9" text-anchor="middle">protagoniza (1:N)</text>
+
+    <!-- Relación CELDA ||--o{ ESTANCIA -->
+    <polyline points="225,244 285,244 285,190 345,190" fill="none" stroke="#222222" stroke-width="1.3"/>
+    <line x1="233" y1="237" x2="233" y2="251" stroke="#222222" stroke-width="1.4"/>
+    <line x1="239" y1="237" x2="239" y2="251" stroke="#222222" stroke-width="1.4"/>
+    <circle cx="330" cy="190" r="4.5" fill="#ffffff" stroke="#222222" stroke-width="1.3"/>
+    <line x1="335" y1="190" x2="345" y2="183" stroke="#222222" stroke-width="1.3"/>
+    <line x1="335" y1="190" x2="345" y2="197" stroke="#222222" stroke-width="1.3"/>
+    <text x="285" y="260" font-size="9" text-anchor="middle">aloja (1:N)</text>
+
+    <!-- Relación OPERADOR ||--o{ ESTANCIA (entrada) -->
+    <line x1="540" y1="145" x2="655" y2="145" stroke="#222222" stroke-width="1.3"/>
+    <line x1="647" y1="138" x2="647" y2="152" stroke="#222222" stroke-width="1.4"/>
+    <line x1="641" y1="138" x2="641" y2="152" stroke="#222222" stroke-width="1.4"/>
+    <circle cx="555" cy="145" r="4.5" fill="#ffffff" stroke="#222222" stroke-width="1.3"/>
+    <line x1="550" y1="145" x2="540" y2="138" stroke="#222222" stroke-width="1.3"/>
+    <line x1="550" y1="145" x2="540" y2="152" stroke="#222222" stroke-width="1.3"/>
+    <text x="598" y="135" font-size="8.8" text-anchor="middle">registra entrada (1:N)</text>
+
+    <!-- Relación OPERADOR |o--o{ ESTANCIA (salida) -->
+    <line x1="540" y1="190" x2="655" y2="190" stroke="#222222" stroke-width="1.3"/>
+    <line x1="647" y1="183" x2="647" y2="197" stroke="#222222" stroke-width="1.4"/>
+    <circle cx="638" cy="190" r="4.5" fill="#ffffff" stroke="#222222" stroke-width="1.3"/>
+    <circle cx="555" cy="190" r="4.5" fill="#ffffff" stroke="#222222" stroke-width="1.3"/>
+    <line x1="550" y1="190" x2="540" y2="183" stroke="#222222" stroke-width="1.3"/>
+    <line x1="550" y1="190" x2="540" y2="197" stroke="#222222" stroke-width="1.3"/>
+    <text x="598" y="207" font-size="8.8" text-anchor="middle">registra salida (0..1:N)</text>
+  </svg>
+  <div class="caption">Figura 2. Modelo Entidad-Relación conceptual (MER) en notación Crow's Foot de StarUML.</div>
+</div>
+
+<h3>5.2 Modelo Relacional (MR)</h3>
+<p>Transformación del modelo conceptual al esquema relacional en tercera forma normal (3FN), incorporando claves primarias sustitutas (<code>id</code>), claves candidatas únicas (<code>UQ</code>) y claves foráneas (<code>FK</code>):</p>
+<pre>
+VEHICULO (<u>id</u> PK, placa UQ NOT NULL, color NOT NULL, modelo NOT NULL, marca NOT NULL, tipo NOT NULL)
+CELDA    (<u>id</u> PK, codigo UQ NOT NULL, tipo NOT NULL)
+OPERADOR (<u>id</u> PK, nombre NOT NULL, telefono NOT NULL)
+ESTANCIA (<u>id</u> PK,
+          vehiculo_id         FK → VEHICULO(id) ON DELETE RESTRICT NOT NULL,
+          celda_id            FK → CELDA(id)    ON DELETE RESTRICT NOT NULL,
+          entrada              NOT NULL,
+          salida              NULL,
+          operador_entrada_id FK → OPERADOR(id) ON DELETE RESTRICT NOT NULL,
+          operador_salida_id  FK → OPERADOR(id) ON DELETE RESTRICT NULL)
+</pre>
+
+<h3>5.3 Modelo Físico de Datos (PostgreSQL 17 en estilo StarUML ERD)</h3>
+<div class="fig">
+  <svg viewBox="0 0 860 365" xmlns="http://www.w3.org/2000/svg" font-family="Tahoma, Arial, sans-serif">
+    <!-- Marco StarUML -->
+    <rect x="4" y="4" width="852" height="357" fill="#ffffff" stroke="#222222" stroke-width="1.3"/>
+    <polygon points="4,4 255,4 255,18 245,28 4,28" fill="#eeeeee" stroke="#222222" stroke-width="1.2"/>
+    <text x="12" y="20" font-size="11" font-weight="bold" fill="#111111">erd</text>
+    <text x="42" y="20" font-size="11" fill="#111111">Modelo_Fisico_PostgreSQL_autos_colombia</text>
+
+    <!-- Tabla vehiculo -->
+    <g filter="url(#su-shadow)">
+      <rect x="24" y="42" width="235" height="150" fill="#ffffd8" stroke="#222222" stroke-width="1.3"/>
+      <line x1="24" y1="68" x2="259" y2="68" stroke="#222222" stroke-width="1.2"/>
+      <line x1="62" y1="68" x2="62" y2="192" stroke="#b0b090" stroke-width="0.9"/>
+      <line x1="150" y1="68" x2="150" y2="192" stroke="#b0b090" stroke-width="0.9"/>
+    </g>
+    <text x="141" y="60" font-size="11" font-weight="bold" text-anchor="middle">vehiculo</text>
+    <text x="30" y="84" font-size="8.8" font-weight="bold">PK</text><text x="68" y="84" font-size="9" font-weight="bold">id</text><text x="156" y="84" font-size="8.5">BIGINT IDENTITY</text>
+    <text x="30" y="102" font-size="8.8" font-weight="bold">UK,NN</text><text x="68" y="102" font-size="9">placa</text><text x="156" y="102" font-size="8.5">TEXT</text>
+    <text x="30" y="120" font-size="8.8">NN</text><text x="68" y="120" font-size="9">color</text><text x="156" y="120" font-size="8.5">TEXT</text>
+    <text x="30" y="138" font-size="8.8">NN</text><text x="68" y="138" font-size="9">modelo</text><text x="156" y="138" font-size="8.5">INTEGER (1..9999)</text>
+    <text x="30" y="156" font-size="8.8">NN</text><text x="68" y="156" font-size="9">marca</text><text x="156" y="156" font-size="8.5">TEXT</text>
+    <text x="30" y="174" font-size="8.8">NN</text><text x="68" y="174" font-size="9">tipo</text><text x="156" y="174" font-size="8.5">TEXT (CHECK enum)</text>
+
+    <!-- Tabla celda -->
+    <g filter="url(#su-shadow)">
+      <rect x="24" y="220" width="235" height="100" fill="#ffffd8" stroke="#222222" stroke-width="1.3"/>
+      <line x1="24" y1="246" x2="259" y2="246" stroke="#222222" stroke-width="1.2"/>
+      <line x1="62" y1="246" x2="62" y2="320" stroke="#b0b090" stroke-width="0.9"/>
+      <line x1="150" y1="246" x2="150" y2="320" stroke="#b0b090" stroke-width="0.9"/>
+    </g>
+    <text x="141" y="238" font-size="11" font-weight="bold" text-anchor="middle">celda</text>
+    <text x="30" y="264" font-size="8.8" font-weight="bold">PK</text><text x="68" y="264" font-size="9" font-weight="bold">id</text><text x="156" y="264" font-size="8.5">BIGINT IDENTITY</text>
+    <text x="30" y="284" font-size="8.8" font-weight="bold">UK,NN</text><text x="68" y="284" font-size="9">codigo</text><text x="156" y="284" font-size="8.5">TEXT</text>
+    <text x="30" y="304" font-size="8.8">NN</text><text x="68" y="304" font-size="9">tipo</text><text x="156" y="304" font-size="8.5">TEXT</text>
+
+    <!-- Tabla estancia -->
+    <g filter="url(#su-shadow)">
+      <rect x="320" y="80" width="258" height="225" fill="#ffffd8" stroke="#222222" stroke-width="1.3"/>
+      <line x1="320" y1="106" x2="578" y2="106" stroke="#222222" stroke-width="1.2"/>
+      <line x1="362" y1="106" x2="362" y2="254" stroke="#b0b090" stroke-width="0.9"/>
+      <line x1="478" y1="106" x2="478" y2="254" stroke="#b0b090" stroke-width="0.9"/>
+      <line x1="320" y1="254" x2="578" y2="254" stroke="#222222" stroke-width="1"/>
+    </g>
+    <text x="449" y="98" font-size="11" font-weight="bold" text-anchor="middle">estancia</text>
+    <text x="326" y="122" font-size="8.5" font-weight="bold">PK</text><text x="366" y="122" font-size="9" font-weight="bold">id</text><text x="482" y="122" font-size="8.2">BIGINT IDENTITY</text>
+    <text x="326" y="140" font-size="8.5" font-weight="bold">FK,NN</text><text x="366" y="140" font-size="9">vehiculo_id</text><text x="482" y="140" font-size="8.2">BIGINT</text>
+    <text x="326" y="158" font-size="8.5" font-weight="bold">FK,NN</text><text x="366" y="158" font-size="9">celda_id</text><text x="482" y="158" font-size="8.2">BIGINT</text>
+    <text x="326" y="176" font-size="8.5">NN</text><text x="366" y="176" font-size="9">entrada</text><text x="482" y="176" font-size="8.2">TIMESTAMPTZ</text>
+    <text x="326" y="194" font-size="8.5">NULL</text><text x="366" y="194" font-size="9">salida</text><text x="482" y="194" font-size="8.2">TIMESTAMPTZ</text>
+    <text x="326" y="212" font-size="8.5" font-weight="bold">FK,NN</text><text x="366" y="212" font-size="9">operador_entrada_id</text><text x="482" y="212" font-size="8.2">BIGINT</text>
+    <text x="326" y="230" font-size="8.5">FK</text><text x="366" y="230" font-size="9">operador_salida_id</text><text x="482" y="230" font-size="8.2">BIGINT (NULL)</text>
+    <text x="328" y="270" font-size="8" fill="#333333">«UQ parcial» uq_estancia_vehiculo_abierta (salida IS NULL)</text>
+    <text x="328" y="283" font-size="8" fill="#333333">«UQ parcial» uq_estancia_celda_abierta (salida IS NULL)</text>
+    <text x="328" y="296" font-size="8" fill="#333333">«CHECK» salida &gt;= entrada · cierre_completo</text>
+
+    <!-- Tabla operador -->
+    <g filter="url(#su-shadow)">
+      <rect x="638" y="135" width="200" height="104" fill="#ffffd8" stroke="#222222" stroke-width="1.3"/>
+      <line x1="638" y1="161" x2="838" y2="161" stroke="#222222" stroke-width="1.2"/>
+      <line x1="672" y1="161" x2="672" y2="239" stroke="#b0b090" stroke-width="0.9"/>
+      <line x1="742" y1="161" x2="742" y2="239" stroke="#b0b090" stroke-width="0.9"/>
+    </g>
+    <text x="738" y="153" font-size="11" font-weight="bold" text-anchor="middle">operador</text>
+    <text x="644" y="180" font-size="8.8" font-weight="bold">PK</text><text x="678" y="180" font-size="9" font-weight="bold">id</text><text x="748" y="180" font-size="8.2">BIGINT IDENTITY</text>
+    <text x="644" y="202" font-size="8.8">NN</text><text x="678" y="202" font-size="9">nombre</text><text x="748" y="202" font-size="8.2">TEXT</text>
+    <text x="644" y="224" font-size="8.8">NN</text><text x="678" y="224" font-size="9">telefono</text><text x="748" y="224" font-size="8.2">TEXT</text>
+
+    <!-- Conectores físicos Crow's Foot -->
+    <!-- vehiculo -> estancia -->
+    <polyline points="259,115 290,115 290,138 320,138" fill="none" stroke="#222222" stroke-width="1.2"/>
+    <line x1="266" y1="109" x2="266" y2="121" stroke="#222222" stroke-width="1.3"/>
+    <line x1="271" y1="109" x2="271" y2="121" stroke="#222222" stroke-width="1.3"/>
+    <circle cx="307" cy="138" r="4" fill="#ffffff" stroke="#222222" stroke-width="1.2"/>
+    <line x1="311" y1="138" x2="320" y2="132" stroke="#222222" stroke-width="1.2"/>
+    <line x1="311" y1="138" x2="320" y2="144" stroke="#222222" stroke-width="1.2"/>
+
+    <!-- celda -> estancia -->
+    <polyline points="259,264 290,264 290,158 320,158" fill="none" stroke="#222222" stroke-width="1.2"/>
+    <line x1="266" y1="258" x2="266" y2="270" stroke="#222222" stroke-width="1.3"/>
+    <line x1="271" y1="258" x2="271" y2="270" stroke="#222222" stroke-width="1.3"/>
+    <circle cx="307" cy="158" r="4" fill="#ffffff" stroke="#222222" stroke-width="1.2"/>
+    <line x1="311" y1="158" x2="320" y2="152" stroke="#222222" stroke-width="1.2"/>
+    <line x1="311" y1="158" x2="320" y2="164" stroke="#222222" stroke-width="1.2"/>
+
+    <!-- operador -> estancia (entrada) -->
+    <polyline points="638,175 608,175 608,210 578,210" fill="none" stroke="#222222" stroke-width="1.2"/>
+    <line x1="631" y1="169" x2="631" y2="181" stroke="#222222" stroke-width="1.3"/>
+    <line x1="626" y1="169" x2="626" y2="181" stroke="#222222" stroke-width="1.3"/>
+    <circle cx="591" cy="210" r="4" fill="#ffffff" stroke="#222222" stroke-width="1.2"/>
+    <line x1="587" y1="210" x2="578" y2="204" stroke="#222222" stroke-width="1.2"/>
+    <line x1="587" y1="210" x2="578" y2="216" stroke="#222222" stroke-width="1.2"/>
+
+    <!-- operador -> estancia (salida) -->
+    <polyline points="638,215 615,215 615,230 578,230" fill="none" stroke="#222222" stroke-width="1.2"/>
+    <line x1="631" y1="209" x2="631" y2="221" stroke="#222222" stroke-width="1.3"/>
+    <circle cx="623" cy="215" r="4" fill="#ffffff" stroke="#222222" stroke-width="1.2"/>
+    <circle cx="591" cy="230" r="4" fill="#ffffff" stroke="#222222" stroke-width="1.2"/>
+    <line x1="587" y1="230" x2="578" y2="224" stroke="#222222" stroke-width="1.2"/>
+    <line x1="587" y1="230" x2="578" y2="236" stroke="#222222" stroke-width="1.2"/>
+  </svg>
+  <div class="caption">Figura 3. Modelo físico de datos en PostgreSQL 17 (revisiones Alembic 0001 y 0002) en estilo StarUML ERD.</div>
+</div>
+
+<!-- ===================== 6. CASOS DE USO STARUML ===================== -->
+<h2 class="page-break">6. Diagrama de casos de uso (StarUML)</h2>
+<p>El siguiente diagrama en notación UML de casos de uso (estilo <strong>StarUML</strong>) modela las interacciones de los actores <strong>Operador</strong> y <strong>Administrador</strong> con el límite del sistema <code>Autos Colombia</code>, incluyendo las relaciones <code>«include»</code> para la carga paginada de catálogos y la verificación previa del estado del vehículo antes de confirmar una salida:</p>
+
+<div class="fig">
+  <svg viewBox="0 0 860 460" xmlns="http://www.w3.org/2000/svg" font-family="Tahoma, Arial, sans-serif">
+    <!-- Marco StarUML -->
+    <rect x="4" y="4" width="852" height="452" fill="#ffffff" stroke="#222222" stroke-width="1.3"/>
+    <polygon points="4,4 235,4 235,18 225,28 4,28" fill="#eeeeee" stroke="#222222" stroke-width="1.2"/>
+    <text x="12" y="20" font-size="11" font-weight="bold" fill="#111111">uc</text>
+    <text x="36" y="20" font-size="11" fill="#111111">CasosDeUso_Iteracion1</text>
+
+    <!-- System Boundary (Subject) -->
+    <rect x="195" y="38" width="635" height="400" fill="#fafafa" stroke="#222222" stroke-width="1.4"/>
+    <text x="512" y="58" font-size="12" font-weight="bold" text-anchor="middle" fill="#111111">Sistema Autos Colombia</text>
+    <line x1="195" y1="66" x2="830" y2="66" stroke="#222222" stroke-width="1"/>
+
+    <!-- Actor 1: Operador -->
+    <use href="#su-actor" x="82" y="150"/>
+    <text x="82" y="193" font-size="11" font-weight="bold" text-anchor="middle">Operador</text>
+
+    <!-- Actor 2: Administrador -->
+    <use href="#su-actor" x="82" y="340"/>
+    <text x="82" y="383" font-size="11" font-weight="bold" text-anchor="middle">Administrador</text>
+
+    <!-- Casos de uso principales (Elipses StarUML) -->
+    <!-- CU-01 -->
+    <g filter="url(#su-shadow)">
+      <ellipse cx="365" cy="108" rx="125" ry="26" fill="#ffffd8" stroke="#222222" stroke-width="1.3"/>
+    </g>
+    <text x="365" y="112" font-size="10.2" font-weight="bold" text-anchor="middle">CU-01 Registrar entrada de vehículo</text>
+
+    <!-- CU-02 -->
+    <g filter="url(#su-shadow)">
+      <ellipse cx="365" cy="176" rx="125" ry="26" fill="#ffffd8" stroke="#222222" stroke-width="1.3"/>
+    </g>
+    <text x="365" y="180" font-size="10.2" font-weight="bold" text-anchor="middle">CU-02 Registrar salida de vehículo</text>
+
+    <!-- CU-03 -->
+    <g filter="url(#su-shadow)">
+      <ellipse cx="365" cy="244" rx="125" ry="26" fill="#ffffd8" stroke="#222222" stroke-width="1.3"/>
+    </g>
+    <text x="365" y="248" font-size="10.2" font-weight="bold" text-anchor="middle">CU-03 Consultar estado por placa</text>
+
+    <!-- CU-07 (Incluido a la derecha) -->
+    <g filter="url(#su-shadow)">
+      <ellipse cx="690" cy="138" rx="115" ry="27" fill="#ffffd8" stroke="#222222" stroke-width="1.3"/>
+    </g>
+    <text x="690" y="135" font-size="10" font-weight="bold" text-anchor="middle">CU-07 Cargar catálogos</text>
+    <text x="690" y="149" font-size="8.8" text-anchor="middle">(celdas y operadores)</text>
+
+    <!-- CU-04 -->
+    <g filter="url(#su-shadow)">
+      <ellipse cx="365" cy="312" rx="125" ry="24" fill="#ffffd8" stroke="#222222" stroke-width="1.3"/>
+    </g>
+    <text x="365" y="316" font-size="10.2" font-weight="bold" text-anchor="middle">CU-04 Gestionar vehículos (CRUD)</text>
+
+    <!-- CU-05 -->
+    <g filter="url(#su-shadow)">
+      <ellipse cx="365" cy="366" rx="125" ry="24" fill="#ffffd8" stroke="#222222" stroke-width="1.3"/>
+    </g>
+    <text x="365" y="370" font-size="10.2" font-weight="bold" text-anchor="middle">CU-05 Gestionar celdas (CRUD)</text>
+
+    <!-- CU-06 -->
+    <g filter="url(#su-shadow)">
+      <ellipse cx="365" cy="414" rx="125" ry="20" fill="#ffffd8" stroke="#222222" stroke-width="1.3"/>
+    </g>
+    <text x="365" y="418" font-size="10.2" font-weight="bold" text-anchor="middle">CU-06 Gestionar operadores (CRUD)</text>
+
+    <!-- Asociaciones Actor Operador -->
+    <line x1="102" y1="142" x2="240" y2="108" stroke="#222222" stroke-width="1.2"/>
+    <line x1="102" y1="150" x2="240" y2="176" stroke="#222222" stroke-width="1.2"/>
+    <line x1="102" y1="158" x2="240" y2="244" stroke="#222222" stroke-width="1.2"/>
+
+    <!-- Asociaciones Actor Administrador -->
+    <line x1="102" y1="332" x2="240" y2="312" stroke="#222222" stroke-width="1.2"/>
+    <line x1="102" y1="340" x2="240" y2="366" stroke="#222222" stroke-width="1.2"/>
+    <line x1="102" y1="348" x2="240" y2="414" stroke="#222222" stroke-width="1.2"/>
+
+    <!-- Relaciones «include» -->
+    <!-- CU-01 -> CU-07 -->
+    <line x1="490" y1="108" x2="578" y2="128" stroke="#222222" stroke-width="1.2" stroke-dasharray="5,3" marker-end="url(#su-open-arrow)"/>
+    <text x="535" y="109" font-size="9" text-anchor="middle">«include»</text>
+
+    <!-- CU-02 -> CU-07 -->
+    <line x1="490" y1="172" x2="578" y2="148" stroke="#222222" stroke-width="1.2" stroke-dasharray="5,3" marker-end="url(#su-open-arrow)"/>
+    <text x="535" y="173" font-size="9" text-anchor="middle">«include»</text>
+
+    <!-- CU-02 -> CU-03 -->
+    <line x1="365" y1="202" x2="365" y2="218" stroke="#222222" stroke-width="1.2" stroke-dasharray="5,3" marker-end="url(#su-open-arrow)"/>
+    <text x="405" y="213" font-size="9" text-anchor="middle">«include»</text>
+  </svg>
+  <div class="caption">Figura 4. Diagrama de casos de uso de la Iteración 1 en estilo StarUML.</div>
+</div>
+
+<!-- ===================== 7. DIAGRAMA DE CLASES STARUML ===================== -->
+<h2 class="page-break">7. Diagrama de clases (StarUML)</h2>
+<p>El diagrama de clases en notación <strong>StarUML</strong> representa las entidades persistentes del dominio (<code>Vehiculo</code>, <code>Celda</code>, <code>Operador</code>, <code>Estancia</code>), el servicio transaccional (<code>ServicioEstancia</code>), el manejo de excepciones de negocio (<code>EstanciaError</code>) y los esquemas de transferencia de datos (DTOs Pydantic):</p>
+
+<div class="fig">
+  <svg viewBox="0 0 880 560" xmlns="http://www.w3.org/2000/svg" font-family="Tahoma, Arial, sans-serif">
+    <!-- Marco StarUML -->
+    <rect x="4" y="4" width="872" height="552" fill="#ffffff" stroke="#222222" stroke-width="1.3"/>
+    <polygon points="4,4 235,4 235,18 225,28 4,28" fill="#eeeeee" stroke="#222222" stroke-width="1.2"/>
+    <text x="12" y="20" font-size="11" font-weight="bold" fill="#111111">cd</text>
+    <text x="35" y="20" font-size="11" fill="#111111">DiagramaDeClases_DominioYServicios</text>
+
+    <!-- Clase Vehiculo -->
+    <g filter="url(#su-shadow)">
+      <rect x="22" y="42" width="215" height="142" fill="#ffffd8" stroke="#222222" stroke-width="1.3"/>
+      <line x1="22" y1="74" x2="237" y2="74" stroke="#222222" stroke-width="1.1"/>
+      <line x1="22" y1="154" x2="237" y2="154" stroke="#222222" stroke-width="1.1"/>
+    </g>
+    <text x="129" y="55" font-size="8.5" text-anchor="middle" fill="#333333">«entity»</text>
+    <text x="129" y="68" font-size="11" font-weight="bold" text-anchor="middle">Vehiculo</text>
+    <text x="30" y="88" font-size="8.8">+ id: int</text>
+    <text x="30" y="101" font-size="8.8">+ placa: str</text>
+    <text x="30" y="114" font-size="8.8">+ color: str</text>
+    <text x="30" y="127" font-size="8.8">+ modelo: int</text>
+    <text x="30" y="140" font-size="8.8">+ marca: str</text>
+    <text x="135" y="88" font-size="8.8">+ tipo: str</text>
+    <text x="30" y="168" font-size="8.5">+ validate_text(key, value): str</text>
+    <text x="30" y="180" font-size="8.5">+ validate_modelo(key, value): int</text>
+
+    <!-- Clase Celda -->
+    <g filter="url(#su-shadow)">
+      <rect x="22" y="206" width="215" height="96" fill="#ffffd8" stroke="#222222" stroke-width="1.3"/>
+      <line x1="22" y1="238" x2="237" y2="238" stroke="#222222" stroke-width="1.1"/>
+      <line x1="22" y1="282" x2="237" y2="282" stroke="#222222" stroke-width="1.1"/>
+    </g>
+    <text x="129" y="219" font-size="8.5" text-anchor="middle" fill="#333333">«entity»</text>
+    <text x="129" y="232" font-size="11" font-weight="bold" text-anchor="middle">Celda</text>
+    <text x="30" y="252" font-size="8.8">+ id: int</text>
+    <text x="30" y="265" font-size="8.8">+ codigo: str</text>
+    <text x="30" y="277" font-size="8.8">+ tipo: str</text>
+    <text x="30" y="296" font-size="8.5">+ validate_text(key, value): str</text>
+
+    <!-- Clase Operador -->
+    <g filter="url(#su-shadow)">
+      <rect x="22" y="324" width="215" height="96" fill="#ffffd8" stroke="#222222" stroke-width="1.3"/>
+      <line x1="22" y1="356" x2="237" y2="356" stroke="#222222" stroke-width="1.1"/>
+      <line x1="22" y1="400" x2="237" y2="400" stroke="#222222" stroke-width="1.1"/>
+    </g>
+    <text x="129" y="337" font-size="8.5" text-anchor="middle" fill="#333333">«entity»</text>
+    <text x="129" y="350" font-size="11" font-weight="bold" text-anchor="middle">Operador</text>
+    <text x="30" y="370" font-size="8.8">+ id: int</text>
+    <text x="30" y="383" font-size="8.8">+ nombre: str</text>
+    <text x="30" y="395" font-size="8.8">+ telefono: str</text>
+    <text x="30" y="414" font-size="8.5">+ validate_text(key, value): str</text>
+
+    <!-- Clase Estancia (Centro) -->
+    <g filter="url(#su-shadow)">
+      <rect x="315" y="135" width="255" height="178" fill="#ffffd8" stroke="#222222" stroke-width="1.3"/>
+      <line x1="315" y1="167" x2="570" y2="167" stroke="#222222" stroke-width="1.1"/>
+      <line x1="315" y1="273" x2="570" y2="273" stroke="#222222" stroke-width="1.1"/>
+    </g>
+    <text x="442" y="148" font-size="8.5" text-anchor="middle" fill="#333333">«entity»</text>
+    <text x="442" y="161" font-size="11" font-weight="bold" text-anchor="middle">Estancia</text>
+    <text x="323" y="182" font-size="8.8">+ id: int</text>
+    <text x="323" y="196" font-size="8.8">+ vehiculo_id: int</text>
+    <text x="323" y="210" font-size="8.8">+ celda_id: int</text>
+    <text x="323" y="224" font-size="8.8">+ entrada: datetime</text>
+    <text x="323" y="238" font-size="8.8">+ salida: datetime | None</text>
+    <text x="323" y="252" font-size="8.8">+ operador_entrada_id: int</text>
+    <text x="323" y="266" font-size="8.8">+ operador_salida_id: int | None</text>
+    <text x="323" y="288" font-size="8.6">+ esta_abierta(): bool</text>
+    <text x="323" y="303" font-size="8.6">+ cerrar(fecha_salida: datetime, op: Operador): None</text>
+
+    <!-- Clase ServicioEstancia (Abajo Centro) -->
+    <g filter="url(#su-shadow)">
+      <rect x="305" y="370" width="275" height="135" fill="#ffffd8" stroke="#222222" stroke-width="1.3"/>
+      <line x1="305" y1="402" x2="580" y2="402" stroke="#222222" stroke-width="1.1"/>
+      <line x1="305" y1="426" x2="580" y2="426" stroke="#222222" stroke-width="1.1"/>
+    </g>
+    <text x="442" y="383" font-size="8.5" text-anchor="middle" fill="#333333">«service»</text>
+    <text x="442" y="396" font-size="11" font-weight="bold" text-anchor="middle">ServicioEstancia</text>
+    <text x="313" y="418" font-size="8.8">- session: Session</text>
+    <text x="313" y="443" font-size="8.6">+ entrada(data: EntradaCrear): EstanciaRespuesta</text>
+    <text x="313" y="459" font-size="8.6">+ salida(data: SalidaCrear): EstanciaRespuesta</text>
+    <text x="313" y="475" font-size="8.6">+ consultar(placa: str): EstadoVehiculoRespuesta</text>
+    <text x="313" y="491" font-size="8.6">- _vehiculo(placa: str): Vehiculo</text>
+
+    <!-- Clase EstanciaError (Abajo Izquierda) -->
+    <g filter="url(#su-shadow)">
+      <rect x="22" y="446" width="215" height="82" fill="#ffffd8" stroke="#222222" stroke-width="1.3"/>
+      <line x1="22" y1="478" x2="237" y2="478" stroke="#222222" stroke-width="1.1"/>
+    </g>
+    <text x="129" y="459" font-size="8.5" text-anchor="middle" fill="#333333">«exception»</text>
+    <text x="129" y="472" font-size="11" font-weight="bold" text-anchor="middle">EstanciaError</text>
+    <text x="30" y="496" font-size="8.8">+ status_code: int</text>
+    <text x="30" y="512" font-size="8.8">+ detail: str</text>
+
+    <!-- Schemas Pydantic (Columna Derecha) -->
+    <g filter="url(#su-shadow)">
+      <rect x="642" y="42" width="214" height="92" fill="#ffffd8" stroke="#222222" stroke-width="1.3"/>
+      <line x1="642" y1="74" x2="856" y2="74" stroke="#222222" stroke-width="1.1"/>
+    </g>
+    <text x="749" y="55" font-size="8.5" text-anchor="middle" fill="#333333">«schema»</text>
+    <text x="749" y="68" font-size="10.5" font-weight="bold" text-anchor="middle">EntradaCrear</text>
+    <text x="650" y="91" font-size="8.8">+ placa: str</text>
+    <text x="650" y="106" font-size="8.8">+ celda_id: int</text>
+    <text x="650" y="121" font-size="8.8">+ operador_id: int</text>
+
+    <g filter="url(#su-shadow)">
+      <rect x="642" y="152" width="214" height="78" fill="#ffffd8" stroke="#222222" stroke-width="1.3"/>
+      <line x1="642" y1="184" x2="856" y2="184" stroke="#222222" stroke-width="1.1"/>
+    </g>
+    <text x="749" y="165" font-size="8.5" text-anchor="middle" fill="#333333">«schema»</text>
+    <text x="749" y="178" font-size="10.5" font-weight="bold" text-anchor="middle">SalidaCrear</text>
+    <text x="650" y="201" font-size="8.8">+ placa: str</text>
+    <text x="650" y="216" font-size="8.8">+ operador_id: int</text>
+
+    <g filter="url(#su-shadow)">
+      <rect x="642" y="248" width="214" height="145" fill="#ffffd8" stroke="#222222" stroke-width="1.3"/>
+      <line x1="642" y1="280" x2="856" y2="280" stroke="#222222" stroke-width="1.1"/>
+    </g>
+    <text x="749" y="261" font-size="8.5" text-anchor="middle" fill="#333333">«schema»</text>
+    <text x="749" y="274" font-size="10.5" font-weight="bold" text-anchor="middle">EstanciaRespuesta</text>
+    <text x="650" y="296" font-size="8.6">+ id: int</text>
+    <text x="650" y="310" font-size="8.6">+ vehiculo_id: int</text>
+    <text x="650" y="324" font-size="8.6">+ celda_id: int</text>
+    <text x="650" y="338" font-size="8.6">+ entrada: datetime</text>
+    <text x="650" y="352" font-size="8.6">+ salida: datetime | None</text>
+    <text x="650" y="366" font-size="8.6">+ operador_entrada_id: int</text>
+    <text x="650" y="380" font-size="8.6">+ operador_salida_id: int | None</text>
+
+    <g filter="url(#su-shadow)">
+      <rect x="642" y="412" width="214" height="95" fill="#ffffd8" stroke="#222222" stroke-width="1.3"/>
+      <line x1="642" y1="444" x2="856" y2="444" stroke="#222222" stroke-width="1.1"/>
+    </g>
+    <text x="749" y="425" font-size="8.5" text-anchor="middle" fill="#333333">«schema»</text>
+    <text x="749" y="438" font-size="10.5" font-weight="bold" text-anchor="middle">EstadoVehiculoRespuesta</text>
+    <text x="650" y="462" font-size="8.6">+ vehiculo: VehiculoRespuesta</text>
+    <text x="650" y="477" font-size="8.6">+ esta_dentro: bool</text>
+    <text x="650" y="492" font-size="8.6">+ estancia: EstanciaAbierta | None</text>
+
+    <!-- Asociaciones entre Entidades y Estancia -->
+    <!-- Vehiculo 1 <-- 0..* Estancia -->
+    <polyline points="315,175 276,175 276,112 237,112" fill="none" stroke="#222222" stroke-width="1.2" marker-end="url(#su-open-arrow)"/>
+    <text x="247" y="106" font-size="8.5">1</text>
+    <text x="292" y="169" font-size="8.5">0..*</text>
+    <text x="276" y="96" font-size="8.2" text-anchor="middle">+vehiculo</text>
+
+    <!-- Celda 1 <-- 0..* Estancia -->
+    <polyline points="315,232 237,232" fill="none" stroke="#222222" stroke-width="1.2" marker-end="url(#su-open-arrow)"/>
+    <text x="245" y="226" font-size="8.5">1</text>
+    <text x="292" y="226" font-size="8.5">0..*</text>
+    <text x="276" y="245" font-size="8.2" text-anchor="middle">+celda</text>
+
+    <!-- Operador 1 <-- 0..* Estancia (operador_entrada) -->
+    <polyline points="315,268 282,268 282,352 237,352" fill="none" stroke="#222222" stroke-width="1.2" marker-end="url(#su-open-arrow)"/>
+    <text x="244" y="346" font-size="8.5">1</text>
+    <text x="295" y="263" font-size="8.5">0..*</text>
+    <text x="244" y="334" font-size="8">+operador_entrada</text>
+
+    <!-- Operador 0..1 <-- 0..* Estancia (operador_salida) -->
+    <polyline points="315,292 264,292 264,392 237,392" fill="none" stroke="#222222" stroke-width="1.2" marker-end="url(#su-open-arrow)"/>
+    <text x="243" y="405" font-size="8.5">0..1</text>
+    <text x="295" y="287" font-size="8.5">0..*</text>
+    <text x="243" y="416" font-size="8">+operador_salida</text>
+
+    <!-- Dependencias de ServicioEstancia -->
+    <line x1="442" y1="370" x2="442" y2="313" stroke="#222222" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#su-open-arrow)"/>
+    <text x="480" y="345" font-size="8.5">«manages»</text>
+
+    <line x1="305" y1="482" x2="237" y2="482" stroke="#222222" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#su-open-arrow)"/>
+    <text x="271" y="475" font-size="8.5" text-anchor="middle">«throws»</text>
+
+    <!-- ServicioEstancia -> Schemas -->
+    <polyline points="580,415 612,415 612,92 642,92" fill="none" stroke="#222222" stroke-width="1.1" stroke-dasharray="4,3" marker-end="url(#su-open-arrow)"/>
+    <polyline points="580,435 620,435 620,192 642,192" fill="none" stroke="#222222" stroke-width="1.1" stroke-dasharray="4,3" marker-end="url(#su-open-arrow)"/>
+    <polyline points="580,455 628,455 628,325 642,325" fill="none" stroke="#222222" stroke-width="1.1" stroke-dasharray="4,3" marker-end="url(#su-open-arrow)"/>
+    <line x1="580" y1="472" x2="642" y2="472" stroke="#222222" stroke-width="1.1" stroke-dasharray="4,3" marker-end="url(#su-open-arrow)"/>
+  </svg>
+  <div class="caption">Figura 5. Diagrama de clases del módulo de control de estancias y entidades asociadas en estilo StarUML.</div>
+</div>
+
+<!-- ===================== 8. DIAGRAMA DE PAQUETES STARUML ===================== -->
+<h2 class="page-break">8. Diagrama de paquetes (StarUML)</h2>
+<p>El diagrama de paquetes en notación <strong>StarUML</strong> (con pestaña superior característica de carpeta UML) muestra la organización modular de <code>frontend/src/app</code> y <code>backend/app</code>, así como las relaciones de dependencia (<code>«import»</code>, <code>«http/rest»</code>) entre capas:</p>
+
+<div class="fig">
+  <svg viewBox="0 0 880 430" xmlns="http://www.w3.org/2000/svg" font-family="Tahoma, Arial, sans-serif">
+    <!-- Marco StarUML -->
+    <rect x="4" y="4" width="872" height="422" fill="#ffffff" stroke="#222222" stroke-width="1.3"/>
+    <polygon points="4,4 235,4 235,18 225,28 4,28" fill="#eeeeee" stroke="#222222" stroke-width="1.2"/>
+    <text x="12" y="20" font-size="11" font-weight="bold" fill="#111111">pkg</text>
+    <text x="38" y="20" font-size="11" fill="#111111">DiagramaDePaquetes_AutosColombia</text>
+
+    <!-- PAQUETE RAÍZ FRONTEND -->
+    <g filter="url(#su-shadow)">
+      <rect x="24" y="44" width="145" height="22" fill="#ffffd8" stroke="#222222" stroke-width="1.3"/>
+      <rect x="24" y="66" width="340" height="336" fill="#ffffd8" stroke="#222222" stroke-width="1.3"/>
+    </g>
+    <text x="96" y="59" font-size="10" font-weight="bold" text-anchor="middle">frontend::src::app</text>
+
+    <!-- Subpaquete routing -->
+    <g filter="url(#su-shadow)">
+      <rect x="52" y="88" width="90" height="18" fill="#ffffff" stroke="#222222" stroke-width="1.2"/>
+      <rect x="52" y="106" width="284" height="48" fill="#ffffff" stroke="#222222" stroke-width="1.2"/>
+    </g>
+    <text x="97" y="101" font-size="9" font-weight="bold" text-anchor="middle">routing &amp; app</text>
+    <text x="194" y="134" font-size="8.8" text-anchor="middle">app.routes.ts · app.config.ts · app.ts</text>
+
+    <!-- Subpaquete components -->
+    <g filter="url(#su-shadow)">
+      <rect x="52" y="176" width="95" height="18" fill="#ffffff" stroke="#222222" stroke-width="1.2"/>
+      <rect x="52" y="194" width="284" height="54" fill="#ffffff" stroke="#222222" stroke-width="1.2"/>
+    </g>
+    <text x="99" y="189" font-size="9" font-weight="bold" text-anchor="middle">components</text>
+    <text x="194" y="218" font-size="8.8" text-anchor="middle">control-acceso · vehiculos · celdas</text>
+    <text x="194" y="234" font-size="8.8" text-anchor="middle">operadores · home</text>
+
+    <!-- Subpaquete services (frontend) -->
+    <g filter="url(#su-shadow)">
+      <rect x="52" y="270" width="80" height="18" fill="#ffffff" stroke="#222222" stroke-width="1.2"/>
+      <rect x="52" y="288" width="132" height="90" fill="#ffffff" stroke="#222222" stroke-width="1.2"/>
+    </g>
+    <text x="92" y="283" font-size="9" font-weight="bold" text-anchor="middle">services</text>
+    <text x="118" y="314" font-size="8.4" text-anchor="middle">estancias.service.ts</text>
+    <text x="118" y="330" font-size="8.4" text-anchor="middle">api.service.ts</text>
+    <text x="118" y="346" font-size="8.4" text-anchor="middle">celdas.service.ts</text>
+    <text x="118" y="362" font-size="8.4" text-anchor="middle">operadores.service.ts</text>
+
+    <!-- Subpaquete models (frontend) -->
+    <g filter="url(#su-shadow)">
+      <rect x="212" y="270" width="75" height="18" fill="#ffffff" stroke="#222222" stroke-width="1.2"/>
+      <rect x="212" y="288" width="124" height="90" fill="#ffffff" stroke="#222222" stroke-width="1.2"/>
+    </g>
+    <text x="249" y="283" font-size="9" font-weight="bold" text-anchor="middle">models</text>
+    <text x="274" y="314" font-size="8.4" text-anchor="middle">estancia.ts</text>
+    <text x="274" y="330" font-size="8.4" text-anchor="middle">vehiculo.ts</text>
+    <text x="274" y="346" font-size="8.4" text-anchor="middle">celda.ts</text>
+    <text x="274" y="362" font-size="8.4" text-anchor="middle">operador.ts</text>
+
+    <!-- Flechas internas Frontend -->
+    <line x1="194" y1="154" x2="194" y2="194" stroke="#222222" stroke-width="1.1" stroke-dasharray="4,3" marker-end="url(#su-open-arrow)"/>
+    <line x1="145" y1="248" x2="145" y2="288" stroke="#222222" stroke-width="1.1" stroke-dasharray="4,3" marker-end="url(#su-open-arrow)"/>
+    <line x1="305" y1="248" x2="305" y2="288" stroke="#222222" stroke-width="1.1" stroke-dasharray="4,3" marker-end="url(#su-open-arrow)"/>
+    <line x1="184" y1="333" x2="212" y2="333" stroke="#222222" stroke-width="1.1" stroke-dasharray="4,3" marker-end="url(#su-open-arrow)"/>
+
+    <!-- PAQUETE RAÍZ BACKEND -->
+    <g filter="url(#su-shadow)">
+      <rect x="435" y="44" width="130" height="22" fill="#ffffd8" stroke="#222222" stroke-width="1.3"/>
+      <rect x="435" y="66" width="418" height="336" fill="#ffffd8" stroke="#222222" stroke-width="1.3"/>
+    </g>
+    <text x="500" y="59" font-size="10" font-weight="bold" text-anchor="middle">backend::app</text>
+
+    <!-- Subpaquete routers -->
+    <g filter="url(#su-shadow)">
+      <rect x="460" y="88" width="75" height="18" fill="#ffffff" stroke="#222222" stroke-width="1.2"/>
+      <rect x="460" y="106" width="175" height="62" fill="#ffffff" stroke="#222222" stroke-width="1.2"/>
+    </g>
+    <text x="497" y="101" font-size="9" font-weight="bold" text-anchor="middle">routers</text>
+    <text x="547" y="128" font-size="8.5" text-anchor="middle">estancias.py · vehiculos.py</text>
+    <text x="547" y="145" font-size="8.5" text-anchor="middle">celdas.py · operadores.py</text>
+
+    <!-- Subpaquete services (backend) -->
+    <g filter="url(#su-shadow)">
+      <rect x="460" y="192" width="75" height="18" fill="#ffffff" stroke="#222222" stroke-width="1.2"/>
+      <rect x="460" y="210" width="175" height="62" fill="#ffffff" stroke="#222222" stroke-width="1.2"/>
+    </g>
+    <text x="497" y="205" font-size="9" font-weight="bold" text-anchor="middle">services</text>
+    <text x="547" y="232" font-size="8.5" text-anchor="middle">estancia.py · vehiculo.py</text>
+    <text x="547" y="249" font-size="8.5" text-anchor="middle">celda.py · operador.py</text>
+
+    <!-- Subpaquete schemas -->
+    <g filter="url(#su-shadow)">
+      <rect x="665" y="88" width="75" height="18" fill="#ffffff" stroke="#222222" stroke-width="1.2"/>
+      <rect x="665" y="106" width="165" height="62" fill="#ffffff" stroke="#222222" stroke-width="1.2"/>
+    </g>
+    <text x="702" y="101" font-size="9" font-weight="bold" text-anchor="middle">schemas</text>
+    <text x="747" y="128" font-size="8.5" text-anchor="middle">estancia.py · vehiculo.py</text>
+    <text x="747" y="145" font-size="8.5" text-anchor="middle">celda.py · operador.py</text>
+
+    <!-- Subpaquete models (backend) -->
+    <g filter="url(#su-shadow)">
+      <rect x="665" y="192" width="75" height="18" fill="#ffffff" stroke="#222222" stroke-width="1.2"/>
+      <rect x="665" y="210" width="165" height="62" fill="#ffffff" stroke="#222222" stroke-width="1.2"/>
+    </g>
+    <text x="702" y="205" font-size="9" font-weight="bold" text-anchor="middle">models.py</text>
+    <text x="747" y="232" font-size="8.5" text-anchor="middle">Base · Vehiculo · Celda</text>
+    <text x="747" y="249" font-size="8.5" text-anchor="middle">Operador · Estancia</text>
+
+    <!-- Subpaquete database & config -->
+    <g filter="url(#su-shadow)">
+      <rect x="460" y="298" width="110" height="18" fill="#ffffff" stroke="#222222" stroke-width="1.2"/>
+      <rect x="460" y="316" width="175" height="62" fill="#ffffff" stroke="#222222" stroke-width="1.2"/>
+    </g>
+    <text x="515" y="311" font-size="9" font-weight="bold" text-anchor="middle">database &amp; config</text>
+    <text x="547" y="340" font-size="8.5" text-anchor="middle">database.py (get_session)</text>
+    <text x="547" y="357" font-size="8.5" text-anchor="middle">config.py · check_db.py</text>
+
+    <!-- Subpaquete migrations & tests -->
+    <g filter="url(#su-shadow)">
+      <rect x="665" y="298" width="115" height="18" fill="#ffffff" stroke="#222222" stroke-width="1.2"/>
+      <rect x="665" y="316" width="165" height="62" fill="#ffffff" stroke="#222222" stroke-width="1.2"/>
+    </g>
+    <text x="722" y="311" font-size="9" font-weight="bold" text-anchor="middle">migrations &amp; tests</text>
+    <text x="747" y="340" font-size="8.5" text-anchor="middle">versions/ (0001, 0002)</text>
+    <text x="747" y="357" font-size="8.5" text-anchor="middle">tests/ (111 pruebas pytest)</text>
+
+    <!-- Flechas internas Backend -->
+    <line x1="575" y1="168" x2="575" y2="210" stroke="#222222" stroke-width="1.1" stroke-dasharray="4,3" marker-end="url(#su-open-arrow)"/>
+    <line x1="635" y1="137" x2="665" y2="137" stroke="#222222" stroke-width="1.1" stroke-dasharray="4,3" marker-end="url(#su-open-arrow)"/>
+    <line x1="635" y1="225" x2="665" y2="155" stroke="#222222" stroke-width="1.1" stroke-dasharray="4,3" marker-end="url(#su-open-arrow)"/>
+    <line x1="635" y1="241" x2="665" y2="241" stroke="#222222" stroke-width="1.1" stroke-dasharray="4,3" marker-end="url(#su-open-arrow)"/>
+    <line x1="600" y1="272" x2="600" y2="316" stroke="#222222" stroke-width="1.1" stroke-dasharray="4,3" marker-end="url(#su-open-arrow)"/>
+    <line x1="800" y1="316" x2="800" y2="272" stroke="#222222" stroke-width="1.1" stroke-dasharray="4,3" marker-end="url(#su-open-arrow)"/>
+
+    <!-- Dependencia entre Frontend services y Backend routers -->
+    <polyline points="118,378 118,392 400,392 400,137 460,137" fill="none" stroke="#222222" stroke-width="1.4" stroke-dasharray="5,3" marker-end="url(#su-open-arrow)"/>
+    <text x="400" y="126" font-size="8.8" font-weight="bold" text-anchor="middle">«http/rest»</text>
+  </svg>
+  <div class="caption">Figura 6. Diagrama de paquetes del proyecto en estilo StarUML.</div>
+</div>
+
+<!-- ===================== 9. CÓDIGO FUENTE Y REPOSITORIO ===================== -->
+<h2 class="page-break">9. Código fuente corriendo y en repositorio en GitHub</h2>
+
+<h3>9.1 Repositorio en GitHub</h3>
+<table>
+  <tr><th style="width:28%">Atributo</th><th>Enlace</th></tr>
+  <tr><td><strong>URL del repositorio</strong></td><td><a href="https://github.com/adolfomj/AutosColombia"><code>https://github.com/adolfomj/AutosColombia</code></a> (rama <code>main</code>)</td></tr>
+  <tr><td><strong>Repositorio origen (Fork)</strong></td><td><a href="https://github.com/ReinaldoRojas/AutosColombia"><code>https://github.com/ReinaldoRojas/AutosColombia</code></a></td></tr>
+</table>
+
+<h3>9.2 Evidencia de la aplicación corriendo localmente</h3>
+<div class="fig">
+  <img class="real" src="img/real-control-acceso.png" alt="Pantalla Control de Acceso en ejecución">
+  <div class="caption">Figura 7. Captura real de la pantalla Control de acceso ejecutándose en <code>http://127.0.0.1:4200/control-acceso</code>.</div>
+</div>
+
+<div class="fig">
+  <img class="real" src="img/real-vehiculos.png" alt="Pantalla Gestión de Vehículos en ejecución">
+  <div class="caption">Figura 8. Captura real de la pantalla Gestión de vehículos en <code>http://127.0.0.1:4200/gestion/vehiculos</code>.</div>
+</div>
+
+<!-- ===================== CONCLUSIONES ===================== -->
+<h2 class="page-break">Conclusiones</h2>
+<p>El desarrollo y diseño integral de la <strong>Iteración 1: Gestión de la entrada y salida de vehículos</strong> para <strong>Autos Colombia</strong> permitió alcanzar satisfactoriamente los objetivos propuestos, consolidando los siguientes aspectos clave:</p>
+<ul>
+  <li><strong>Solidez en el modelado y la arquitectura:</strong> La integración de diagramas en notación StarUML (Casos de Uso, Clases, Paquetes y Modelos de Datos Conceptual y Físico) permitió establecer una separación nítida de responsabilidades entre el frontend cliente y el backend transaccional, garantizando mantenibilidad, trazabilidad y bajo acoplamiento.</li>
+  <li><strong>Garantía de integridad y consistencia de datos:</strong> Mediante restricciones físicas en PostgreSQL (índices únicos parciales para estancias abiertas, claves foráneas con <code>ON DELETE RESTRICT</code> y control de concurrencia pesimista), se erradicaron anomalías críticas del negocio tales como registrar múltiples ingresos simultáneos de una misma placa o sobreasignar celdas previamente ocupadas.</li>
+  <li><strong>Fidelidad visual y experiencia de usuario:</strong> La interfaz reactiva construida en Angular 22 logró una estricta fidelidad con el prototipo de alta fidelidad diseñado en Figma, brindando al operador una navegación intuitiva, validaciones inmediatas en cliente y un control de accesos ágil y sin ambigüedades.</li>
+  <li><strong>Calidad del software comprobada:</strong> La cobertura exhaustiva de pruebas automáticas (111 pruebas unitarias y de integración en backend con pytest, y 38 pruebas unitarias en frontend con Vitest) asegura que los flujos críticos de negocio respondan con precisión y resiliencia ante excepciones, colisiones de red o estados inconsistentes.</li>
+</ul>
+
+</body>
+</html>

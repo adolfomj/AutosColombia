@@ -3,53 +3,25 @@
     <div>
       <span class="eyebrow">GESTIÓN DE OPERADORES</span>
       <h1 id="operators-title">Operadores</h1>
-      <p>Administra los operadores de Autos Colombia.</p>
+      <p>
+        Administra los operadores de Autos Colombia autorizados para registrar entradas y salidas.
+      </p>
     </div>
-    <button class="primary" type="button" (click)="newOperator()" [disabled]="busy()">
-      Nuevo operador
-    </button>
+    <div class="heading-actions">
+      <span class="registered-pill">{{ total() }} registrados</span>
+      <button class="primary" type="button" (click)="newOperator()" [disabled]="busy()">
+        + Nuevo operador
+      </button>
+    </div>
   </header>
+
   @if (success()) {
     <p class="notice success" role="status">{{ success() }}</p>
   }
   @if (actionError()) {
     <p class="notice error" role="alert">{{ actionError() }}</p>
   }
-  @if (showForm()) {
-    <section class="panel" aria-labelledby="form-title">
-      <h2 id="form-title">{{ editing() === null ? 'Registrar operador' : 'Editar operador' }}</h2>
-      <p class="hint">
-        Todos los campos son obligatorios. El teléfono conserva prefijos y ceros iniciales.
-      </p>
-      <form [formGroup]="form" (ngSubmit)="save()" novalidate>
-        <fieldset [disabled]="busy()">
-          <legend class="sr-only">Datos del operador</legend>
-          <div class="form-grid">
-            @for (field of fields; track field.key) {
-              <div class="field">
-                <label [for]="field.key">{{ field.label }}</label
-                ><input
-                  [type]="field.key === 'telefono' ? 'tel' : 'text'"
-                  [id]="field.key"
-                  [formControlName]="field.key"
-                  required
-                  [attr.aria-invalid]="!!fieldError(field.key)"
-                  [attr.aria-describedby]="field.key + '-error'"
-                /><span class="field-error" [id]="field.key + '-error'">{{
-                  fieldError(field.key)
-                }}</span>
-              </div>
-            }
-          </div>
-          <div class="actions">
-            <button type="submit" class="primary">
-              {{ saving() ? 'Guardando…' : 'Guardar operador' }}</button
-            ><button type="button" (click)="cancel()">Cancelar</button>
-          </div>
-        </fieldset>
-      </form>
-    </section>
-  }
+
   @if (pendingDelete(); as operator) {
     <section
       class="panel confirmation"
@@ -71,81 +43,164 @@
       </div>
     </section>
   }
-  <section class="panel list" aria-label="Listado de operadores" [attr.aria-busy]="loading()">
-    <div class="list-heading">
-      <h2>
-        Operadores registrados <span class="count">{{ total() }}</span>
-      </h2>
-      <button type="button" (click)="load()" [disabled]="busy()">Actualizar listado</button>
-    </div>
-    @if (loading()) {
-      <p class="empty" role="status">Cargando operadores…</p>
-    } @else if (listError()) {
-      <p class="notice error" role="alert">{{ listError() }}</p>
-    } @else if (!items().length) {
-      <div class="empty">
-        <h3>Aún no hay operadores</h3>
-        <p>Registra un operador para comenzar.</p>
+
+  <div class="catalog-grid">
+    <section class="panel list" aria-label="Listado de operadores" [attr.aria-busy]="loading()">
+      <div class="list-heading">
+        <div>
+          <h2>
+            Operadores registrados <span class="count">{{ total() }}</span>
+          </h2>
+          <p class="list-sub">Personal habilitado para operar el control de acceso.</p>
+        </div>
+        <button type="button" (click)="load()" [disabled]="busy()">↻ Actualizar</button>
       </div>
-    } @else {
-      <div class="table-scroll">
-        <table>
-          <caption class="sr-only">
-            Operadores registrados
-          </caption>
-          <thead>
-            <tr>
-              <th scope="col">Nombre</th>
-              <th scope="col">Teléfono</th>
-              <th scope="col">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (operator of items(); track operator.id) {
+
+      <div class="table-head-bar" aria-hidden="true">
+        <span>OPERADOR</span>
+        <span>TELÉFONO</span>
+        <span>ID</span>
+        <span>ACCIONES</span>
+      </div>
+
+      @if (loading()) {
+        <p class="empty" role="status">Cargando operadores…</p>
+      } @else if (listError()) {
+        <p class="notice error" role="alert">{{ listError() }}</p>
+      } @else if (!items().length) {
+        <div class="empty">
+          <span class="empty-icon" aria-hidden="true">👤</span>
+          <h3>Aún no hay operadores</h3>
+          <p>
+            Registra un operador para comenzar. Los necesitarás al registrar entradas y salidas de
+            vehículos.
+          </p>
+        </div>
+      } @else {
+        <div class="table-scroll">
+          <table>
+            <caption class="sr-only">
+              Operadores registrados
+            </caption>
+            <thead>
               <tr>
-                <th scope="row">{{ operator.nombre }}</th>
-                <td>{{ operator.telefono }}</td>
-                <td class="row-actions">
-                  <button
-                    type="button"
-                    (click)="edit(operator)"
-                    [disabled]="busy()"
-                    [attr.aria-label]="'Editar ' + operator.nombre"
-                  >
-                    Editar</button
-                  ><button
-                    type="button"
-                    class="delete-link"
-                    (click)="confirmDelete(operator)"
-                    [disabled]="busy()"
-                    [attr.aria-label]="'Eliminar ' + operator.nombre"
-                  >
-                    Eliminar
-                  </button>
-                </td>
+                <th scope="col">Nombre</th>
+                <th scope="col">Teléfono</th>
+                <th scope="col">Acciones</th>
               </tr>
-            }
-          </tbody>
-        </table>
-      </div>
-    }
-    <nav class="pagination" aria-label="Paginación de operadores">
-      <span>Página {{ page() }} de {{ pages() }} · {{ limit }} por página</span>
-      <div class="actions">
-        <button
-          type="button"
-          (click)="load(offset() - limit)"
-          [disabled]="busy() || offset() === 0"
-        >
-          Anterior</button
-        ><button
-          type="button"
-          (click)="load(offset() + limit)"
-          [disabled]="busy() || offset() + limit >= total()"
-        >
-          Siguiente
-        </button>
-      </div>
-    </nav>
-  </section>
+            </thead>
+            <tbody>
+              @for (operator of items(); track operator.id) {
+                <tr>
+                  <th scope="row">
+                    <span class="row-primary">{{ operator.nombre }}</span>
+                    <span class="row-id">#{{ operator.id }}</span>
+                  </th>
+                  <td>
+                    <span class="mono-tag">{{ operator.telefono }}</span>
+                  </td>
+                  <td class="row-actions">
+                    <button
+                      type="button"
+                      (click)="edit(operator)"
+                      [disabled]="busy()"
+                      [attr.aria-label]="'Editar ' + operator.nombre"
+                    >
+                      Editar</button
+                    ><button
+                      type="button"
+                      class="delete-link"
+                      (click)="confirmDelete(operator)"
+                      [disabled]="busy()"
+                      [attr.aria-label]="'Eliminar ' + operator.nombre"
+                    >
+                      Eliminar
+                    </button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+
+      <nav class="pagination" aria-label="Paginación de operadores">
+        <span>Página {{ page() }} de {{ pages() }} · {{ limit }} por página</span>
+        <div class="actions">
+          <button
+            type="button"
+            (click)="load(offset() - limit)"
+            [disabled]="busy() || offset() === 0"
+          >
+            ‹ Anterior</button
+          ><button
+            type="button"
+            (click)="load(offset() + limit)"
+            [disabled]="busy() || offset() + limit >= total()"
+          >
+            Siguiente ›
+          </button>
+        </div>
+      </nav>
+    </section>
+
+    <aside class="side-column">
+      <section class="panel form-panel" aria-labelledby="form-title">
+        <div class="form-header">
+          <span class="form-icon" aria-hidden="true">+</span>
+          <div>
+            <h2 id="form-title">
+              {{ editing() === null ? 'Registrar operador' : 'Editar operador' }}
+            </h2>
+            <p class="hint">
+              Todos los campos son obligatorios. El teléfono conserva prefijos y ceros iniciales.
+            </p>
+          </div>
+        </div>
+        <form [formGroup]="form" (ngSubmit)="save()" novalidate>
+          <fieldset [disabled]="busy()">
+            <legend class="sr-only">Datos del operador</legend>
+            <div class="form-grid">
+              @for (field of fields; track field.key) {
+                <div class="field">
+                  <label [for]="field.key"
+                    >{{ field.label }} <span class="req">*</span></label
+                  ><input
+                    [type]="field.key === 'telefono' ? 'tel' : 'text'"
+                    [id]="field.key"
+                    [formControlName]="field.key"
+                    [placeholder]="
+                      field.key === 'telefono' ? 'Ej. 031 555 0192 o 3001234567' : 'Ej. Carlos Ramírez'
+                    "
+                    required
+                    [attr.aria-invalid]="!!fieldError(field.key)"
+                    [attr.aria-describedby]="field.key + '-error'"
+                  /><span class="field-error" [id]="field.key + '-error'">{{
+                    fieldError(field.key)
+                  }}</span>
+                </div>
+              }
+            </div>
+            <div class="actions form-actions">
+              <button type="submit" class="primary">
+                {{ saving() ? 'Guardando…' : 'Guardar operador' }}</button
+              ><button type="button" (click)="cancel()">Cancelar</button>
+            </div>
+          </fieldset>
+        </form>
+      </section>
+    </aside>
+  </div>
+
+  <div class="bottom-callout">
+    <span class="callout-icon" aria-hidden="true">✓</span>
+    <div>
+      <strong>Un responsable en cada movimiento</strong>
+      <p>
+        Los operadores registrados aparecerán en los selectores de entrada y salida dentro de
+        Control de acceso. No se pueden eliminar operadores que tengan estancias asociadas en el
+        historial.
+      </p>
+    </div>
+  </div>
 </section>
